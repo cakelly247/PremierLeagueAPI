@@ -9,6 +9,7 @@ namespace PremierLeagueApi.Data
 {
     public class PLDbContext : IdentityDbContext
     {
+         public DbSet<TeamEntity> Teams { get; set; }        
         public PLDbContext(DbContextOptions<PLDbContext> options)
             : base(options) {}
     }
