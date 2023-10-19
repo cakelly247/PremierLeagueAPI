@@ -14,8 +14,8 @@ namespace PremierLeagueApi.Data
     public class PLDbContext : IdentityDbContext<UserEntity, IdentityRole<int>, int>
     {
 
-         public DbSet<TeamEntity> Teams { get; set; }        
-
+        public DbSet<TeamEntity> Teams { get; set; }        
+        public DbSet<PlayerEntity> Players {get; set;}
         public DbSet<Manager> Managers { get; set; }
         public DbSet<PlayerStats> PlayerStats { get; set; } 
         public PLDbContext(DbContextOptions<PLDbContext> options)
