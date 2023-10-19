@@ -5,14 +5,23 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PremierLeagueApi.Data;
 using PremierLeagueApi.Data.Entities;
+
 
 namespace PremierLeagueApi.Data
 {
     public class PLDbContext : IdentityDbContext<UserEntity, IdentityRole<int>, int>
     {
+        public DbSet<Manager> Managers { get; set; }
+        public DbSet<PlayerStats> PlayerStats { get; set; } 
+
         public PLDbContext(DbContextOptions<PLDbContext> options)
-            : base(options) {}
+
+            : base(options) { }
+
+       
+
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,5 +29,6 @@ namespace PremierLeagueApi.Data
 
             modelBuilder.Entity<UserEntity>().ToTable("Users");
         }
+
     }
 }
