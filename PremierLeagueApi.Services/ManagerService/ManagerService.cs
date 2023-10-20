@@ -6,7 +6,7 @@ using PremierLeagueApi.Models;
 
 namespace PremierLeagueApi.Services
 {
-    public class ManagerService
+    public class ManagerService : IManagerService
     {
         private readonly PLDbContext _context;
 
