@@ -64,10 +64,6 @@ namespace PremierLeagueApi.Controllers
                 return NotFound();
             }
 
-            // Update properties of existingTeam with data from updatedTeam
-            // You can use a service method to perform the update
-
-            // After updating, return the updated team
             return Ok(existingTeam);
         }
 

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using PremierLeagueApi.Data.Entities;
 
 namespace PremierLeagueApi.Data;
 
@@ -27,5 +28,7 @@ public class TeamEntity
 
     [Required]
     public int Losses {get; set;}
+    
+    public List<PlayerEntity> Players {get; set;}
 }
 

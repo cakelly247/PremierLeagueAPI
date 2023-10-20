@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Collections;
+using PremierLeagueApi.Data.Entities;
 namespace PremierLeagueApi.Models;
 
 public class TeamModel
@@ -20,6 +21,9 @@ public int Wins {get; set;}
 
 [Range(0, int.MaxValue)]
 public int Losses {get; set;}
+
+public List<PlayerEntity> Players {get; set;}
+
 
 
 
