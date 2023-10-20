@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class PlayerStats
 {
@@ -14,7 +15,6 @@ public class PlayerStats
     [Required]
     public int Saves { get; set; }
 
+    [ForeignKey("Players")]
     public int PlayerId { get; set; }
-
-    
 }

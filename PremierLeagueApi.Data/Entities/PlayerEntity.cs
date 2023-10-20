@@ -24,5 +24,10 @@ namespace PremierLeagueApi.Data.Entities
 
         [Required]
         public string Country { get; set; } = string.Empty;
+
+        [ForeignKey("Teams")]
+        public int TeamId { get; set; }
+
+        public virtual PlayerStats PlayerStats { get; set; } = null!;
     }
 }
