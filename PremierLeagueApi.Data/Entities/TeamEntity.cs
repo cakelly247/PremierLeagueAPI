@@ -13,18 +13,22 @@ public class TeamEntity
 {
     [Key]
     public int Id { get; set; }
-    public string TeamName {get; set;}
+
+    [Required]
+    public string TeamName {get; set;} = string.Empty;
+
+    [ForeignKey("Managers")]
     public int ManagerId { get; set; }
 
     [MaxLength (100)]
     public string City {get; set;} = string.Empty;
 
+    [Required]
     public int Wins {get; set;}
 
+    [Required]
     public int Losses {get; set;}
-
+    
     public List<PlayerEntity> Players {get; set;}
-
-
 }
 

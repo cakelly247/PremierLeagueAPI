@@ -11,10 +11,10 @@ namespace PremierLeagueApi.Models;
 public class TeamModel
 {
 [Required]
-public string TeamName {get; set;}
+public string TeamName {get; set;} = string.Empty;
 
 [MaxLength(100)]
-public string City { get; set; }
+public string City { get; set; } = string.Empty;
 
 [Range(0, int.MaxValue)]
 public int Wins {get; set;}

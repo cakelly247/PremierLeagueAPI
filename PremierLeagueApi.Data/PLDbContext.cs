@@ -15,22 +15,22 @@ namespace PremierLeagueApi.Data
     {
 
         public DbSet<TeamEntity> Teams { get; set; }        
-        public DbSet<PlayerEntity> Players {get; set;}
-        public DbSet<Manager> Managers { get; set; }
+        public DbSet<ManagerEntity> Managers { get; set; }
         public DbSet<PlayerStats> PlayerStats { get; set; } 
+        public DbSet<PlayerEntity> Players { get; set; }
         public PLDbContext(DbContextOptions<PLDbContext> options)
 
             : base(options) { }
-
-       
-
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<UserEntity>().ToTable("Users");
+            modelBuilder.Entity<ManagerEntity>().ToTable("Managers");
+            modelBuilder.Entity<PlayerEntity>().ToTable("Players");
+            modelBuilder.Entity<TeamEntity>().ToTable("Teams");
+            modelBuilder.Entity<PlayerStats>().ToTable("PlayerStats");
         }
-
     }
 }

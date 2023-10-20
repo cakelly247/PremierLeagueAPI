@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PremierLeagueApi.Data;
 
-public class PlayerStatsService
+public class PlayerStatsService : IPlayerStatsService
 {
     private readonly PLDbContext _context;
 
@@ -13,7 +13,7 @@ public class PlayerStatsService
         _context = context;
     }
 
-    public async Task<PlayerStats> GetPlayerStatsByIdAsync(int playerStatsId)
+    public async Task<PlayerStats?> GetPlayerStatsByIdAsync(int playerStatsId)
     {
         return await _context.PlayerStats.FindAsync(playerStatsId);
     }
