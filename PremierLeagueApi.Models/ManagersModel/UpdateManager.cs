@@ -4,7 +4,7 @@ namespace PremierLeagueApi.Models
 {
     public class UpdateManager
     {
-        
+        public int ManagerId { get; set; }
 
         public string Name { get; set; }
 

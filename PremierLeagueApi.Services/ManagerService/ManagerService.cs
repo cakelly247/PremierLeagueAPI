@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using PremierLeagueApi.Data;
 using PremierLeagueApi.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 
 
@@ -27,16 +28,31 @@ namespace PremierLeagueApi.Services
             return await _context.Managers.ToListAsync();
         }
 
-        public async Task CreateManagerAsync(ManagerEntity manager)
+        public async Task<bool> CreateManagerAsync(CreateManager managerModel)
         {
-            _context.Managers.Add(manager);
-            await _context.SaveChangesAsync();
+            ManagerEntity entity = new ManagerEntity()
+            {
+                Name = managerModel.Name, 
+                Country = managerModel.Country,
+            };
+
+            await _context.AddAsync(entity);
+            var success = await _context.SaveChangesAsync();
+            return success != 0 ? true : false;
         }
 
-        public async Task UpdateManagerAsync(ManagerEntity manager)
+        public async Task<bool> UpdateManagerAsync(UpdateManager managerModel)
         {
-            _context.Managers.Update(manager);
+            var manager = await _context.Managers.FindAsync(managerModel.ManagerId);
+            if (manager is null)
+                return false;
+
+            manager.Name = managerModel.Name;
+            manager.Country = managerModel.Country;
+            manager.TeamId = managerModel.TeamId;  
+          
             await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task DeleteManagerAsync(int managerId)
@@ -48,5 +64,7 @@ namespace PremierLeagueApi.Services
                 await _context.SaveChangesAsync();
             }
         }
+
+        
     }
 }
