@@ -15,27 +15,43 @@ public class TeamServices : ITeamService
         _dbContext = dbContext;
     }
 
-    public async Task<List<TeamEntity>> GetAllTeams()
+    public async Task<TeamEntity> CreateTeamAsync(TeamModel newTeam)
+    {
+    var teamEntity = new TeamEntity
+    {
+        TeamName = newTeam.TeamName,
+        City = newTeam.City,
+        Wins = newTeam.Wins,
+        Losses = newTeam.Losses
+    };
+    _dbContext.Teams.Add(teamEntity);
+    await _dbContext.SaveChangesAsync();
+    return teamEntity;
+    }
+
+
+    public async Task<List<TeamEntity>> GetAllTeamsAsync()
         {
             return await _dbContext.Teams.ToListAsync();
         }
 
-        public async Task<TeamEntity?> GetTeamById(int teamId)
+        public async Task<TeamEntity?> GetTeamByIdAsync(int teamId)
         {
             return await _dbContext.Teams.FindAsync(teamId);
         }
 
-        public async Task<TeamEntity?> GetTeamByName(string teamName)
+        public async Task<TeamEntity?> GetTeamByNameAsync(string teamName)
         {
             return await _dbContext.Teams.FirstOrDefaultAsync(t => t.TeamName == teamName);
         }
 
-        public async Task<List<TeamEntity>> GetTeamsByCity(string city)
+        public async Task<List<TeamEntity>> GetTeamsByCityAsync(string city)
         {
             return await _dbContext.Teams.Where(t => t.City == city).ToListAsync();
         }
 
-        public async Task<bool> UpdateTeam(int teamId, TeamEntity updatedTeam)
+        //Change Update Team like Germaynes and create update team models
+        public async Task<bool> UpdateTeamAsync(int teamId, TeamEntity updatedTeam)
         {
             var existingTeam = await _dbContext.Teams.FindAsync(teamId);
             if (existingTeam == null)
@@ -50,8 +66,9 @@ public class TeamServices : ITeamService
             await _dbContext.SaveChangesAsync();
             return true;
         }
+        
 
-        public async Task<bool> DeleteTeam(int teamId)
+        public async Task<bool> DeleteTeamAsync(int teamId)
         {
             var team = await _dbContext.Teams.FindAsync(teamId);
             if (team == null)
