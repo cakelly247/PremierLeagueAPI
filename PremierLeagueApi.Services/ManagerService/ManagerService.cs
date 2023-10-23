@@ -1,13 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using PremierLeagueApi.Data;
-using PremierLeagueApi.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
+using PremierLeagueApi.Data.Entities;
+using PremierLeagueApi.Models.ManagersModel;
 
-
-
-namespace PremierLeagueApi.Services
+namespace PremierLeagueApi.Services.ManagerService
 {
     public class ManagerService : IManagerService
     {
@@ -32,7 +28,7 @@ namespace PremierLeagueApi.Services
         {
             ManagerEntity entity = new ManagerEntity()
             {
-                Name = managerModel.Name, 
+                Name = managerModel.Name,
                 Country = managerModel.Country,
             };
 
@@ -49,8 +45,8 @@ namespace PremierLeagueApi.Services
 
             manager.Name = managerModel.Name;
             manager.Country = managerModel.Country;
-            manager.TeamId = managerModel.TeamId;  
-          
+            manager.TeamId = managerModel.TeamId;
+
             await _context.SaveChangesAsync();
             return true;
         }
@@ -64,7 +60,5 @@ namespace PremierLeagueApi.Services
                 await _context.SaveChangesAsync();
             }
         }
-
-        
     }
 }

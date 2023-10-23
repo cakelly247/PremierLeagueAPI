@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using PremierLeagueApi.Data;
 using PremierLeagueApi.Data.Entities;
 using PremierLeagueApi.Models.Player;
-using Microsoft.AspNetCore.Identity;
 
 namespace PremierLeagueApi.Services.Player
 {

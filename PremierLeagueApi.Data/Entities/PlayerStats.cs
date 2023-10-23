@@ -1,5 +1,6 @@
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
+namespace PremierLeagueApi.Data.Entities;
 
 public class PlayerStats
 {
@@ -11,7 +12,4 @@ public class PlayerStats
     public int Assists { get; set; } = 0;
 
     public int Saves { get; set; } = 0;
-
-    // [ForeignKey("Players")]
-    // public int PlayerId { get; set; }
 }

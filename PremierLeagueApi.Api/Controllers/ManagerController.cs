@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using PremierLeagueApi.Data;
 using PremierLeagueApi.Data.Entities;
-using PremierLeagueApi.Models;
+using PremierLeagueApi.Models.ManagersModel;
+using PremierLeagueApi.Models.Responses;
 using PremierLeagueApi.Services;
+using PremierLeagueApi.Services.ManagerService;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -44,13 +46,14 @@ namespace PremierLeagueApi.Controllers
         [Route("Create")]
         public async Task<IActionResult> CreateManager([FromBody] CreateManager managerModel)
         {
-            if (managerModel == null)
+            if (managerModel is null)
             {
-                return BadRequest();
+                return BadRequest(new TextResponse("Unable to create manager."));
             }
 
             await _managerService.CreateManagerAsync(managerModel);
-            return Ok();
+            TextResponse response = new("Manager was created Successfully.");
+            return Ok(response);
         }
 
         [HttpPut]

@@ -1,6 +1,4 @@
-using PremierLeagueApi.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using PremierLeagueApi.Data.Entities;
 
 public interface IPlayerStatsService
 {

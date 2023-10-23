@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 using PremierLeagueApi.Data.Enums;
 
 namespace PremierLeagueApi.Data.Entities
@@ -20,7 +16,7 @@ namespace PremierLeagueApi.Data.Entities
         public int JerseyNumber { get; set; }
 
         [Required]
-        public Position Position;
+        public Position Position { get; set; }
 
         [Required]
         public string Country { get; set; } = string.Empty;

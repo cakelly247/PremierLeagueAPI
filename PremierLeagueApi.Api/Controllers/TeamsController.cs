@@ -3,6 +3,7 @@ using PremierLeagueApi.Services;
 using PremierLeagueApi.Models;
 using System.Threading.Tasks;
 using PremierLeagueApi.Services.Teams;
+using PremierLeagueApi.Models.Teams;
 
 namespace PremierLeagueApi.Controllers
 {
