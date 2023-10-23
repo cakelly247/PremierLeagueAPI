@@ -21,14 +21,14 @@ namespace PremierLeagueApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Manager>>> GetAllManagers()
+        public async Task<ActionResult<IEnumerable<ManagerEntity>>> GetAllManagers()
         {
             var managers = await _managerService.GetAllManagersAsync();
             return Ok(managers);
         }
 
         [HttpGet("{managerId}")]
-        public async Task<ActionResult<Manager>> GetManager(int managerId)
+        public async Task<ActionResult<ManagerEntity>> GetManager(int managerId)
         {
             var manager = await _managerService.GetManagerByIdAsync(managerId);
 
@@ -41,7 +41,7 @@ namespace PremierLeagueApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Manager>> CreateManager(Manager manager)
+        public async Task<ActionResult<ManagerEntity>> CreateManager(ManagerEntity manager)
         {
             if (manager == null)
             {
@@ -53,7 +53,7 @@ namespace PremierLeagueApi.Controllers
         }
 
         [HttpPut("{managerId}")]
-        public async Task<IActionResult> UpdateManager(int managerId, Manager manager)
+        public async Task<IActionResult> UpdateManager(int managerId, ManagerEntity manager)
         {
             if (managerId != manager.ManagerId)
             {

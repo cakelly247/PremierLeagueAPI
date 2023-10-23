@@ -8,7 +8,7 @@ using PremierLeagueApi.Models;
 
 namespace PremierLeagueApi.Services
 {
-    public class ManagerService
+    public class ManagerService : IManagerService
     {
         private readonly PLDbContext _context;
 
@@ -17,23 +17,23 @@ namespace PremierLeagueApi.Services
             _context = context;
         }
 
-        public async Task<Manager> GetManagerByIdAsync(int managerId)
+        public async Task<ManagerEntity?> GetManagerByIdAsync(int managerId)
         {
             return await _context.Managers.FindAsync(managerId);
         }
 
-        public async Task<List<Manager>> GetAllManagersAsync()
+        public async Task<List<ManagerEntity>> GetAllManagersAsync()
         {
             return await _context.Managers.ToListAsync();
         }
 
-        public async Task CreateManagerAsync(Manager manager)
+        public async Task CreateManagerAsync(ManagerEntity manager)
         {
             _context.Managers.Add(manager);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateManagerAsync(Manager manager)
+        public async Task UpdateManagerAsync(ManagerEntity manager)
         {
             _context.Managers.Update(manager);
             await _context.SaveChangesAsync();

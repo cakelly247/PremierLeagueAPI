@@ -20,12 +20,12 @@ public class TeamServices : ITeamService
             return await _dbContext.Teams.ToListAsync();
         }
 
-        public async Task<TeamEntity> GetTeamById(int teamId)
+        public async Task<TeamEntity?> GetTeamById(int teamId)
         {
             return await _dbContext.Teams.FindAsync(teamId);
         }
 
-        public async Task<TeamEntity> GetTeamByName(string teamName)
+        public async Task<TeamEntity?> GetTeamByName(string teamName)
         {
             return await _dbContext.Teams.FirstOrDefaultAsync(t => t.TeamName == teamName);
         }

@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class PlayerStats
 {
     [Key]
+    [ForeignKey("Players")]
     public int PlayerStatsId { get; set; }
 
     [Required]
@@ -14,7 +16,6 @@ public class PlayerStats
     [Required]
     public int Saves { get; set; }
 
-    public int PlayerId { get; set; }
-
-    
+    // [ForeignKey("Players")]
+    // public int PlayerId { get; set; }
 }
