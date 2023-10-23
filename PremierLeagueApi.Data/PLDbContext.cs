@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PremierLeagueApi.Data;
 using PremierLeagueApi.Data.Entities;
-
 
 namespace PremierLeagueApi.Data
 {
@@ -21,16 +15,13 @@ namespace PremierLeagueApi.Data
         public PLDbContext(DbContextOptions<PLDbContext> options)
 
             : base(options) { }
-        
+            
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<UserEntity>().ToTable("Users");
-            modelBuilder.Entity<ManagerEntity>().ToTable("Managers");
-            modelBuilder.Entity<PlayerEntity>().ToTable("Players");
-            modelBuilder.Entity<TeamEntity>().ToTable("Teams");
-            modelBuilder.Entity<PlayerStats>().ToTable("PlayerStats");
         }
     }
 }

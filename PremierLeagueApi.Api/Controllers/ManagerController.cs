@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace PremierLeagueApi.Controllers
 {
-    [Route("api/managers")]
+    [Route("api/manager")]
     [ApiController]
     public class ManagerController : ControllerBase
     {
-        private readonly ManagerService _managerService;
+        private readonly IManagerService _managerService;
 
-        public ManagerController(ManagerService managerService)
+        public ManagerController(IManagerService managerService)
         {
             _managerService = managerService;
         }
@@ -41,7 +41,8 @@ namespace PremierLeagueApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateManager(CreateManager managerModel)
+        [Route("Create")]
+        public async Task<IActionResult> CreateManager([FromBody] CreateManager managerModel)
         {
             if (managerModel == null)
             {
@@ -52,8 +53,8 @@ namespace PremierLeagueApi.Controllers
             return Ok();
         }
 
-        [HttpPut("{managerId}")]
-        public async Task<IActionResult> UpdateManager(UpdateManager managerModel)
+        [HttpPut]
+        public async Task<IActionResult> UpdateManager([FromBody] UpdateManager managerModel)
         {
             if (managerModel is null)
             {
@@ -62,7 +63,7 @@ namespace PremierLeagueApi.Controllers
 
             await _managerService.UpdateManagerAsync(managerModel);
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete("{managerId}")]

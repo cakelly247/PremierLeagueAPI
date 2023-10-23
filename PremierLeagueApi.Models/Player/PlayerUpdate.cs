@@ -6,28 +6,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using PremierLeagueApi.Data.Enums;
 
-namespace PremierLeagueApi.Data.Entities
+namespace PremierLeagueApi.Models.Player
 {
-    public class PlayerEntity
+    public class PlayerUpdate
     {
         [Key]
         public int Id { get; set; }
 
         [Required, MaxLength(100)]
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
 
         [Required]
         public int JerseyNumber { get; set; }
 
         [Required]
-        public Position Position;
+        public Position Position { get; set; }
 
         [Required]
-        public string Country { get; set; } = string.Empty;
+        public string Country { get; set; }
 
         [ForeignKey("Teams")]
-        public int TeamId { get; set; } = 1;
-
-        public PlayerStats PlayerStats { get; set; } = null!;
+        public int TeamId { get; set; }
     }
 }

@@ -173,15 +173,12 @@ namespace PremierLeagueApi.Data.Migrations
                     b.Property<int>("Goals")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Saves")
                         .HasColumnType("int");
 
                     b.HasKey("PlayerStatsId");
 
-                    b.ToTable("PlayerStats", (string)null);
+                    b.ToTable("PlayerStats");
                 });
 
             modelBuilder.Entity("PremierLeagueApi.Data.Entities.PlayerEntity", b =>
@@ -207,6 +204,9 @@ namespace PremierLeagueApi.Data.Migrations
                     b.Property<int>("PlayerStatsId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("TeamEntityId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
 
@@ -214,7 +214,9 @@ namespace PremierLeagueApi.Data.Migrations
 
                     b.HasIndex("PlayerStatsId");
 
-                    b.ToTable("Players", (string)null);
+                    b.HasIndex("TeamEntityId");
+
+                    b.ToTable("Players");
                 });
 
             modelBuilder.Entity("PremierLeagueApi.Data.Entities.UserEntity", b =>
@@ -295,18 +297,20 @@ namespace PremierLeagueApi.Data.Migrations
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
 
                     b.HasKey("ManagerId");
 
-                    b.ToTable("Managers", (string)null);
+                    b.ToTable("Managers");
                 });
 
             modelBuilder.Entity("PremierLeagueApi.Data.TeamEntity", b =>
@@ -330,14 +334,15 @@ namespace PremierLeagueApi.Data.Migrations
 
                     b.Property<string>("TeamName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Wins")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams", (string)null);
+                    b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -399,7 +404,16 @@ namespace PremierLeagueApi.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PremierLeagueApi.Data.TeamEntity", null)
+                        .WithMany("Players")
+                        .HasForeignKey("TeamEntityId");
+
                     b.Navigation("PlayerStats");
+                });
+
+            modelBuilder.Entity("PremierLeagueApi.Data.TeamEntity", b =>
+                {
+                    b.Navigation("Players");
                 });
 #pragma warning restore 612, 618
         }

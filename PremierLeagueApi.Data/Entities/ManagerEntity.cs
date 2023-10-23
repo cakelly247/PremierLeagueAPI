@@ -8,13 +8,13 @@ namespace PremierLeagueApi.Data
         [Key]
         public int ManagerId { get; set; }
 
-        [Required]
+        [Required, MaxLength(100)]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
+        [Required, MaxLength(100)]
         public string Country { get; set; } = string.Empty;
 
         [ForeignKey("Teams")]
-        public int TeamId { get; set; }
+        public int TeamId { get; set; } = 1;
     }
 }
