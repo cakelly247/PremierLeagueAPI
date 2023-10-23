@@ -1,6 +1,8 @@
+using System.Dynamic;
+
 namespace PremierLeagueApi.Models
 {
-    public class ManagerDto
+    public class UpdateManager
     {
         public int ManagerId { get; set; }
 
@@ -9,5 +11,7 @@ namespace PremierLeagueApi.Models
         public string Country { get; set; }
 
         public int TeamId { get; set; }
+
+        
     }
 }

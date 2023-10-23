@@ -5,9 +5,10 @@ using PremierLeagueApi.Data;
 using PremierLeagueApi.Models;
 public interface IManagerService
 {
-    Task<ManagerEntity?> GetManagerByIdAsync(int managerId);
+
+    Task<ManagerEntity> GetManagerByIdAsync(int managerId);
     Task<List<ManagerEntity>> GetAllManagersAsync();
-    Task CreateManagerAsync(ManagerEntity manager);
-    Task UpdateManagerAsync(ManagerEntity manager);
+    Task<bool> CreateManagerAsync(CreateManager managerModel);
+    Task<bool> UpdateManagerAsync(UpdateManager managerModel);
     Task DeleteManagerAsync(int managerId);
 }

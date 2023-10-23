@@ -41,26 +41,26 @@ namespace PremierLeagueApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ManagerEntity>> CreateManager(ManagerEntity manager)
+        public async Task<IActionResult> CreateManager(CreateManager managerModel)
         {
-            if (manager == null)
+            if (managerModel == null)
             {
                 return BadRequest();
             }
 
-            await _managerService.CreateManagerAsync(manager);
-            return CreatedAtAction("GetManager", new { managerId = manager.ManagerId }, manager);
+            await _managerService.CreateManagerAsync(managerModel);
+            return Ok();
         }
 
         [HttpPut("{managerId}")]
-        public async Task<IActionResult> UpdateManager(int managerId, ManagerEntity manager)
+        public async Task<IActionResult> UpdateManager(UpdateManager managerModel)
         {
-            if (managerId != manager.ManagerId)
+            if (managerModel is null)
             {
                 return BadRequest();
             }
 
-            await _managerService.UpdateManagerAsync(manager);
+            await _managerService.UpdateManagerAsync(managerModel);
 
             return NoContent();
         }
