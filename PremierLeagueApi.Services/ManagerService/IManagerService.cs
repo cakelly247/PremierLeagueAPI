@@ -1,11 +1,10 @@
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using PremierLeagueApi.Data;
-using PremierLeagueApi.Models;
+using PremierLeagueApi.Data.Entities;
+using PremierLeagueApi.Models.ManagersModel;
+
+namespace PremierLeagueApi.Services.ManagerService;
+
 public interface IManagerService
 {
-
     Task<ManagerEntity> GetManagerByIdAsync(int managerId);
     Task<List<ManagerEntity>> GetAllManagersAsync();
     Task<bool> CreateManagerAsync(CreateManager managerModel);

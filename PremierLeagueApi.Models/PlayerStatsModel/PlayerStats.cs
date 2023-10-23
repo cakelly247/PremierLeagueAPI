@@ -1,4 +1,4 @@
-namespace PremierLeagueApi.Models
+namespace PremierLeagueApi.Models.PlayerStatsModel
 {
     public class PlayerStatsDto
     {

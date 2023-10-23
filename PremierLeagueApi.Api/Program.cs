@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PremierLeagueApi.Services.Player;
 using PremierLeagueApi.Services.Teams;
+using PremierLeagueApi.Services.ManagerService;
 
 var builder = WebApplication.CreateBuilder(args);
 

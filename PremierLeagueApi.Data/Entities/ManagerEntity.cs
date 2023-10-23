@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PremierLeagueApi.Data
+namespace PremierLeagueApi.Data.Entities
 {
     public class ManagerEntity
     {

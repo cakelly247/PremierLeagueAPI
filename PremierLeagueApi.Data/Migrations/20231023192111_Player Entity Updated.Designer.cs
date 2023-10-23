@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PremierLeagueApi.Data;
 
@@ -11,9 +12,11 @@ using PremierLeagueApi.Data;
 namespace PremierLeagueApi.Data.Migrations
 {
     [DbContext(typeof(PLDbContext))]
-    partial class PLDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231023192111_Player Entity Updated")]
+    partial class PlayerEntityUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,30 +162,26 @@ namespace PremierLeagueApi.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("PremierLeagueApi.Data.Entities.ManagerEntity", b =>
+            modelBuilder.Entity("PlayerStats", b =>
                 {
-                    b.Property<int>("ManagerId")
+                    b.Property<int>("PlayerStatsId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ManagerId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlayerStatsId"));
 
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("TeamId")
+                    b.Property<int>("Assists")
                         .HasColumnType("int");
 
-                    b.HasKey("ManagerId");
+                    b.Property<int>("Goals")
+                        .HasColumnType("int");
 
-                    b.ToTable("Managers");
+                    b.Property<int>("Saves")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlayerStatsId");
+
+                    b.ToTable("PlayerStats");
                 });
 
             modelBuilder.Entity("PremierLeagueApi.Data.Entities.PlayerEntity", b =>
@@ -224,60 +223,6 @@ namespace PremierLeagueApi.Data.Migrations
                     b.HasIndex("TeamEntityId");
 
                     b.ToTable("Players");
-                });
-
-            modelBuilder.Entity("PremierLeagueApi.Data.Entities.PlayerStats", b =>
-                {
-                    b.Property<int>("PlayerStatsId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlayerStatsId"));
-
-                    b.Property<int>("Assists")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Goals")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Saves")
-                        .HasColumnType("int");
-
-                    b.HasKey("PlayerStatsId");
-
-                    b.ToTable("PlayerStats");
-                });
-
-            modelBuilder.Entity("PremierLeagueApi.Data.Entities.TeamEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("Losses")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ManagerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TeamName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("Wins")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("PremierLeagueApi.Data.Entities.UserEntity", b =>
@@ -348,6 +293,64 @@ namespace PremierLeagueApi.Data.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("PremierLeagueApi.Data.ManagerEntity", b =>
+                {
+                    b.Property<int>("ManagerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ManagerId"));
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ManagerId");
+
+                    b.ToTable("Managers");
+                });
+
+            modelBuilder.Entity("PremierLeagueApi.Data.TeamEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Losses")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ManagerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TeamName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Wins")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Teams");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
@@ -401,20 +404,20 @@ namespace PremierLeagueApi.Data.Migrations
 
             modelBuilder.Entity("PremierLeagueApi.Data.Entities.PlayerEntity", b =>
                 {
-                    b.HasOne("PremierLeagueApi.Data.Entities.PlayerStats", "PlayerStats")
+                    b.HasOne("PlayerStats", "PlayerStats")
                         .WithMany()
                         .HasForeignKey("PlayerStatsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PremierLeagueApi.Data.Entities.TeamEntity", null)
+                    b.HasOne("PremierLeagueApi.Data.TeamEntity", null)
                         .WithMany("Players")
                         .HasForeignKey("TeamEntityId");
 
                     b.Navigation("PlayerStats");
                 });
 
-            modelBuilder.Entity("PremierLeagueApi.Data.Entities.TeamEntity", b =>
+            modelBuilder.Entity("PremierLeagueApi.Data.TeamEntity", b =>
                 {
                     b.Navigation("Players");
                 });

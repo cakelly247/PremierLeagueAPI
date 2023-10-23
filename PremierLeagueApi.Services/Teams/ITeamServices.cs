@@ -1,6 +1,5 @@
-
-
 using PremierLeagueApi.Data;
+using PremierLeagueApi.Data.Entities;
 
 namespace PremierLeagueApi.Services.Teams;
 

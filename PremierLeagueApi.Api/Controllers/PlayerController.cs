@@ -25,18 +25,13 @@ public class PlayerController : ControllerBase
     [HttpPost("Create")]
     public async Task<IActionResult> CreatePlayer([FromBody] PlayerCreate model)
     {
-        if (!ModelState.IsValid)
+        if (model is null)
         {
-            return BadRequest(model);
+            return BadRequest(new TextResponse("Unable to create player."));
         }
 
-        var createResult = await _playerService.CreatePlayerAsync(model);
-        if (createResult)
-        {
-            TextResponse response = new("Player was created Successfully.");
-            return Ok(response);
-        }
-
-        return BadRequest(new TextResponse("Player could not be created."));
+        await _playerService.CreatePlayerAsync(model);
+        TextResponse response = new("Player was created Successfully.");
+        return Ok(response);
     }
 }
