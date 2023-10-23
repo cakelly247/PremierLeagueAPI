@@ -31,7 +31,7 @@ namespace PremierLeagueApi.Controllers
             var team = await _teamService.GetTeamById(id);
             if (team == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             return Ok(team);
@@ -43,7 +43,7 @@ namespace PremierLeagueApi.Controllers
             var team = await _teamService.GetTeamByName(name);
             if (team == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             return Ok(team);
@@ -62,7 +62,7 @@ namespace PremierLeagueApi.Controllers
             var existingTeam = await _teamService.GetTeamById(id);
             if (existingTeam == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             return Ok(existingTeam);
@@ -74,10 +74,24 @@ namespace PremierLeagueApi.Controllers
             var result = await _teamService.DeleteTeam(id);
             if (!result)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             return NoContent();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTeam([FromBody] TeamModel newTeam)
+        {
+            var createdTeam = await _teamService.CreateTeam(newTeam);
+            if(createdTeam == null)
+            {
+                return BadRequest("Failed to create team")
+            }
+
+            return TextResponse response = new response("Team created Successfully")
+        }
+        //List method to list players
+        //add and delete player
     }
 }
