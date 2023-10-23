@@ -38,5 +38,10 @@ namespace PremierLeagueApi.Services.Player
             
             return success != 0 ? true : false;
         }
+
+        // public async Task<bool> UpdatePlayerAsync(PlayerUpdate updateModel)
+        // {
+
+        // }
     }
 }
