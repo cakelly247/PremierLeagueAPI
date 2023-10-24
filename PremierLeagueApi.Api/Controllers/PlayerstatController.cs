@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PremierLeagueApi.Data.Entities;
+using PremierLeagueApi.Models.Responses;
 
 namespace PremierLeagueApi.Controllers
 {
@@ -21,14 +22,13 @@ namespace PremierLeagueApi.Controllers
             return Ok(playerStats);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetPlayerStats(int id)
+        [HttpGet("{playerId}")]
+        public async Task<IActionResult> GetPlayerStatsById([FromRoute] int playerId)
         {
-            var playerStats = await _playerStatsService.GetPlayerStatsByIdAsync(id);
-
-            if (playerStats == null)
+            var playerStats = await _playerStatsService.GetPlayerStatsByIdAsync(playerId);
+            if (playerStats is null)
             {
-                return NotFound();
+                return BadRequest(new TextResponse("Unable to find stats for this player."));
             }
 
             return Ok(playerStats);
@@ -38,7 +38,7 @@ namespace PremierLeagueApi.Controllers
         public async Task<IActionResult> CreatePlayerStats([FromBody] PlayerStatsEntity playerStats)
         {
             await _playerStatsService.CreatePlayerStatsAsync(playerStats);
-            return CreatedAtAction(nameof(GetPlayerStats), new { id = playerStats.PlayerId }, playerStats);
+            return CreatedAtAction(nameof(GetPlayerStatsById), new { id = playerStats.PlayerId }, playerStats);
         }
 
         [HttpPut("{id}")]
