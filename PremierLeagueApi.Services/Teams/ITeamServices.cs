@@ -12,7 +12,8 @@ public interface ITeamService
     Task<List<TeamEntity>> GetTeamsByCityAsync(string city);
     Task<bool> UpdateTeamAsync(UpdateTeam updatedTeam);
     Task DeleteTeamAsync(int teamId);
-    Task<bool> AddPlayerToTeamAsync(int teamId, int playerId);
-    Task<bool> RemovePlayerFromTeamAsync(int teamId, int playerId);
+    Task<bool> UpdateTeamPlayerAsync(UpdateTeamPlayer model);
     Task<List<PlayerEntity>> GetPlayersInTeamAsync(int teamId);
+    Task<bool> UpdateTeamManagerAsync(UpdateTeamManager model);
+
 }
