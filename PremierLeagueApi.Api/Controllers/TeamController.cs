@@ -73,7 +73,7 @@ namespace PremierLeagueApi.Controllers
         {
             if (selectedTeam is null)
             {
-                return BadRequest(new TextResponse("Unable to find/update Team."));
+                return BadRequest(new TextResponse("Unable to update Team."));
             }
 
             await _teamService.UpdateTeamAsync(selectedTeam);
@@ -81,7 +81,7 @@ namespace PremierLeagueApi.Controllers
         }
 
         [HttpDelete("{teamId}")]
-        public async Task<IActionResult> DeleteTeam(int teamId)
+        public async Task<IActionResult> DeleteTeam([FromRoute] int teamId)
         {
             await _teamService.DeleteTeamAsync(teamId);
             return Ok(new TextResponse("Team has been successfully deleted."));
@@ -108,13 +108,11 @@ namespace PremierLeagueApi.Controllers
                 return BadRequest(new TextResponse("Invalid player data"));
             }
 
-            var existingTeam = await _teamService.GetTeamByIdAsync(teamId);
-            if (existingTeam == null)
+            var team = await _teamService.GetTeamByIdAsync(teamId);
+            if (team == null)
             {
                 return BadRequest(new TextResponse("Team not found"));
             }
-
-            var createdPlayer = await _playerService.CreatePlayerAsync(newPlayer);
             
             return Ok(new TextResponse("Player added Successfully"));
         }

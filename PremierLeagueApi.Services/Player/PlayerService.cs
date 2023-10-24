@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PremierLeagueApi.Data;
 using PremierLeagueApi.Data.Entities;
 using PremierLeagueApi.Models.Player;
@@ -32,6 +33,47 @@ namespace PremierLeagueApi.Services.Player
             var success = await _context.SaveChangesAsync();
             
             return success != 0 ? true : false;
+        }
+
+        public async Task<PlayerEntity?> GetPlayerByIdAsync(int playerId)
+        {
+            return await _context.Players.FindAsync(playerId);
+        }
+
+        public async Task<List<PlayerEntity>> GetAllPlayersAsync()
+        {
+            return await _context.Players.ToListAsync();
+        }
+
+
+        public async Task<bool> UpdatePlayerAsync(PlayerUpdate model)
+        {
+            var player = await _context.Players.FindAsync(model.Id);
+            if (player is null)
+            {
+                return false;
+            }
+
+            player.Name = model.Name;
+            player.JerseyNumber = model.JerseyNumber;
+            player.Position = model.Position;
+            player.Country = model.Country;
+            player.TeamId = model.TeamId;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> DeletePlayerAsync(int playerId)
+        {
+            var player = await _context.Players.FindAsync(playerId);
+            if (player is null)
+            {
+                return false;
+            }
+
+            _context.Players.Remove(player);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }
