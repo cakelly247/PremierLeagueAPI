@@ -2,9 +2,9 @@ using PremierLeagueApi.Data.Entities;
 
 public interface IPlayerStatsService
 {
-    Task<PlayerStats?> GetPlayerStatsByIdAsync(int playerStatsId);
-    Task<List<PlayerStats>> GetAllPlayerStatsAsync();
-    Task CreatePlayerStatsAsync(PlayerStats playerStats);
-    Task UpdatePlayerStatsAsync(PlayerStats playerStats);
-    Task DeletePlayerStatsAsync(int playerStatsId);
+    Task<PlayerStatsEntity?> GetPlayerStatsByIdAsync(int playerId);
+    Task<List<PlayerStatsEntity>> GetAllPlayerStatsAsync();
+    Task CreatePlayerStatsAsync(PlayerStatsEntity playerStats);
+    Task UpdatePlayerStatsAsync(PlayerStatsEntity playerStats);
+    Task DeletePlayerStatsAsync(int playerId);
 }

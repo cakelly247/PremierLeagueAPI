@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PremierLeagueApi.Models.Player;
 using PremierLeagueApi.Models.Responses;
 using PremierLeagueApi.Services.Player;
-using PremierLeagueApi.Services.User;
 
 namespace PremierLeagueApi.Api.Controllers;
 

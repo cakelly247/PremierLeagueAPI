@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using PremierLeagueApi.Services;
-using PremierLeagueApi.Models;
-using System.Threading.Tasks;
 using PremierLeagueApi.Services.Teams;
 using PremierLeagueApi.Models.Teams;
+using PremierLeagueApi.Models.Responses;
 
 namespace PremierLeagueApi.Controllers
 {
@@ -21,14 +19,14 @@ namespace PremierLeagueApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTeams()
         {
-            var teams = await _teamService.GetAllTeams();
+            var teams = await _teamService.GetAllTeamsAsync();
             return Ok(teams);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTeamById(int id)
         {
-            var team = await _teamService.GetTeamById(id);
+            var team = await _teamService.GetTeamByIdAsync(id);
             if (team == null)
             {
                 return BadRequest();
@@ -37,74 +35,78 @@ namespace PremierLeagueApi.Controllers
             return Ok(team);
         }
 
-        [HttpGet("findByName")]
+        [HttpGet("{name}")]
         public async Task<IActionResult> GetTeamByName([FromQuery] string name)
         {
-            var team = await _teamService.GetTeamByName(name);
+            var team = await _teamService.GetTeamByNameAsync(name);
             if (team == null)
             {
-                return BadRequest();
+                return BadRequest(new TextResponse($"Unable to find Team:{name}"));
             }
 
-            return Ok(team);
+            return Ok();
         }
 
-        [HttpGet("findByCity")]
+        [HttpGet("{city}")]
         public async Task<IActionResult> GetTeamsByCity([FromQuery] string city)
         {
-            var teams = await _teamService.GetTeamsByCity(city);
+            var teams = await _teamService.GetTeamsByCityAsync(city);
+            if (teams is null)
+            {
+                return BadRequest(new TextResponse("Unable to find Team(s)."));
+            }
+            else if (teams.Count == 0)
+            {
+                return NotFound(new TextResponse($"{city} currently has no Teams." ));
+            }
+
             return Ok(teams);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTeam(int id, [FromBody] TeamModel updatedTeam)
+        [HttpPut]
+        public async Task<IActionResult> UpdateTeam([FromBody] UpdateTeam selectedTeam)
         {
-            var existingTeam = await _teamService.GetTeamById(id);
-            if (existingTeam == null)
+            if (selectedTeam is null)
             {
-                return BadRequest();
+                return BadRequest(new TextResponse("Unable to find/update Team."));
             }
 
-            return Ok(existingTeam);
+            await _teamService.UpdateTeamAsync(selectedTeam);
+            return Ok(new TextResponse("Team has been successfully updated."));
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTeam(int id)
+        [HttpDelete("{teamId}")]
+        public async Task<IActionResult> DeleteTeam(int teamId)
         {
-            var result = await _teamService.DeleteTeam(id);
-            if (!result)
-            {
-                return BadRequest();
-            }
-
-            return NoContent();
+            await _teamService.DeleteTeamAsync(teamId);
+            return Ok(new TextResponse("Team has been successfully deleted."));
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTeam([FromBody] TeamModel newTeam)
+        public async Task<IActionResult> CreateTeam([FromBody] CreateTeam selectedTeam)
         {
-            var createdTeam = await _teamService.CreateTeam(newTeam);
-            if (createdTeam == null)
+            if (selectedTeam is null)
             {
-                return BadRequest("Failed to create team")
+                return BadRequest(new TextResponse("Failed to create team"));
             }
 
-            return TextResponse response = new response("Team created Successfully")
+            await _teamService.CreateTeamAsync(selectedTeam);
+            return Ok(new TextResponse("Team has been successfully created."));
         }
-
-        [HttpPost("{teamId}/addPlayer")]
+       
+       [HttpPost("{teamId}/addPlayer")]
         public async Task<IActionResult> AddPlayerToTeam(int teamId, [FromBody] PlayerModel newPlayer)
         {
             if (newPlayer == null)
             {
-                return BadRequest("Invalid player data");
+                return BadRequest(new TextResponse("Invalid player data"));
             }
 
 
             var existingTeam = await _teamService.GetTeamById(teamId);
             if (existingTeam == null)
             {
-                return BadRequest("Team not found");
+                return BadRequest(new TextResponse("Team not found"));
             }
 
             var createdPlayer = await _playerService.CreatePlayer(newPlayer);
@@ -112,7 +114,7 @@ namespace PremierLeagueApi.Controllers
 
             await _teamService.UpdateTeam(teamId, existingTeam);
 
-            return TextResponse response = new response("Player added Successfully")
+            return Ok(new TextResponse("Player added Successfully"))
         }
 
         [HttpDelete("{teamId}/removePlayer/{playerId}")]
@@ -121,13 +123,13 @@ namespace PremierLeagueApi.Controllers
             var existingTeam = await _teamService.GetTeamById(teamId);
             if (existingTeam == null)
             {
-                return BadRequest("Team not found");
+                return BadRequest(new TextResponse("Team not found"));
             }
 
             var playerToRemove = existingTeam.PlayerList.FirstOrDefault(p => p.Id == playerId);
             if (playerToRemove == null)
             {
-                return BadRequest("Player not found in the team");
+                return BadRequest(new TextResponse("Player not found in the team"));
             }
 
             existingTeam.PlayerList.Remove(playerToRemove);
@@ -136,10 +138,10 @@ namespace PremierLeagueApi.Controllers
 
             if (!result)
             {
-                return BadRequest("Failed to update the team");
+                return BadRequest(new TextResponse("Failed to update the team"));
             }
 
-            return BadRequest("Failed to remove");
+            return BadRequest(new TextResponse("Failed to remove"));
         }
 
         [HttpGet("{teamId}/players")]
@@ -148,14 +150,12 @@ namespace PremierLeagueApi.Controllers
             var existingTeam = await _teamService.GetTeamById(teamId);
             if (existingTeam == null)
             {
-                return NotFound("Team not found");
+                return NotFound(new TextResponse("Team not found"));
             }
 
             var playersInTeam = existingTeam.PlayerList;
 
             return Ok(playersInTeam);
         }
-
-
     }
 }

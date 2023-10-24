@@ -1,15 +1,13 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace PremierLeagueApi.Models.PlayerStatsModel
 {
-    public class PlayerStatsDto
+    public class UpdatePlayerStats
     {
-        public int PlayerStatsId { get; set; }
-
-        public int Goals { get; set; }
-
-        public int Assists { get; set; }
-
-        public int Saves { get; set; }
-
+        [ForeignKey("Players")]
         public int PlayerId { get; set; }
+        public int Goals { get; set; }
+        public int Assists { get; set; }
+        public int Saves { get; set; }
     }
 }

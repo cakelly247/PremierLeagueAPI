@@ -1,8 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using PremierLeagueApi.Data.Entities;
-using PremierLeagueApi.Services;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace PremierLeagueApi.Controllers
 {
@@ -38,16 +35,16 @@ namespace PremierLeagueApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePlayerStats([FromBody] PlayerStats playerStats)
+        public async Task<IActionResult> CreatePlayerStats([FromBody] PlayerStatsEntity playerStats)
         {
             await _playerStatsService.CreatePlayerStatsAsync(playerStats);
-            return CreatedAtAction(nameof(GetPlayerStats), new { id = playerStats.PlayerStatsId }, playerStats);
+            return CreatedAtAction(nameof(GetPlayerStats), new { id = playerStats.PlayerId }, playerStats);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePlayerStats(int id, [FromBody] PlayerStats playerStats)
+        public async Task<IActionResult> UpdatePlayerStats(int id, [FromBody] PlayerStatsEntity playerStats)
         {
-            if (id != playerStats.PlayerStatsId)
+            if (id != playerStats.PlayerId)
             {
                 return BadRequest();
             }
