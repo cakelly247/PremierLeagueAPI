@@ -11,31 +11,31 @@ public class PlayerStatsService : IPlayerStatsService
         _context = context;
     }
 
-    public async Task<PlayerStats?> GetPlayerStatsByIdAsync(int playerStatsId)
+    public async Task<PlayerStatsEntity?> GetPlayerStatsByIdAsync(int playerId)
     {
-        return await _context.PlayerStats.FindAsync(playerStatsId);
+        return await _context.PlayerStats.FindAsync(playerId);
     }
 
-    public async Task<List<PlayerStats>> GetAllPlayerStatsAsync()
+    public async Task<List<PlayerStatsEntity>> GetAllPlayerStatsAsync()
     {
         return await _context.PlayerStats.ToListAsync();
     }
 
-    public async Task CreatePlayerStatsAsync(PlayerStats playerStats)
+    public async Task CreatePlayerStatsAsync(PlayerStatsEntity playerStats)
     {
         _context.PlayerStats.Add(playerStats);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdatePlayerStatsAsync(PlayerStats playerStats)
+    public async Task UpdatePlayerStatsAsync(PlayerStatsEntity playerStats)
     {
         _context.PlayerStats.Update(playerStats);
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeletePlayerStatsAsync(int playerStatsId)
+    public async Task DeletePlayerStatsAsync(int playerId)
     {
-        var playerStats = await GetPlayerStatsByIdAsync(playerStatsId);
+        var playerStats = await GetPlayerStatsByIdAsync(playerId);
         if (playerStats != null)
         {
             _context.PlayerStats.Remove(playerStats);
