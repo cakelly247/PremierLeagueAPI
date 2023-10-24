@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using PremierLeagueApi.Services.Teams;
 using PremierLeagueApi.Models.Teams;
 using PremierLeagueApi.Models.Responses;
+using PremierLeagueApi.Services.Player;
+using PremierLeagueApi.Services.ManagerService;
+using PremierLeagueApi.Models.Player;
 
 namespace PremierLeagueApi.Controllers
 {
@@ -10,10 +13,14 @@ namespace PremierLeagueApi.Controllers
     public class TeamController : ControllerBase
     {
         private readonly ITeamService _teamService;
+        private readonly IPlayerService _playerService;
+        private readonly IManagerService _managerService;
 
-        public TeamController(ITeamService teamService)
+        public TeamController(ITeamService teamService, IPlayerService playerService, IManagerService managerService)
         {
             _teamService = teamService;
+            _playerService = playerService;
+            _managerService = managerService;
         }
 
         [HttpGet]
@@ -95,67 +102,54 @@ namespace PremierLeagueApi.Controllers
         }
        
        [HttpPost("{teamId}/addPlayer")]
-        public async Task<IActionResult> AddPlayerToTeam(int teamId, [FromBody] PlayerModel newPlayer)
+        public async Task<IActionResult> UpdateTeamPlayer([FromBody] UpdateTeamPlayer model)
         {
-            if (newPlayer == null)
+            if (model == null)
             {
                 return BadRequest(new TextResponse("Invalid player data"));
             }
 
-
-            var existingTeam = await _teamService.GetTeamById(teamId);
-            if (existingTeam == null)
+            var team = await _teamService.GetTeamByIdAsync(model.TeamId);
+            if (team == null)
             {
                 return BadRequest(new TextResponse("Team not found"));
             }
 
-            var createdPlayer = await _playerService.CreatePlayer(newPlayer);
-            existingTeam.PlayerList.Add(createdPlayer);
+            await _playerService.UpdateTeamPlayerAsync(model);
 
-            await _teamService.UpdateTeam(teamId, existingTeam);
-
-            return Ok(new TextResponse("Player added Successfully"))
-        }
-
-        [HttpDelete("{teamId}/removePlayer/{playerId}")]
-        public async Task<IActionResult> RemovePlayerFromTeam(int teamId, int playerId)
-        {
-            var existingTeam = await _teamService.GetTeamById(teamId);
-            if (existingTeam == null)
-            {
-                return BadRequest(new TextResponse("Team not found"));
-            }
-
-            var playerToRemove = existingTeam.PlayerList.FirstOrDefault(p => p.Id == playerId);
-            if (playerToRemove == null)
-            {
-                return BadRequest(new TextResponse("Player not found in the team"));
-            }
-
-            existingTeam.PlayerList.Remove(playerToRemove);
-
-            var result = await _teamService.UpdateTeam(teamId, existingTeam);
-
-            if (!result)
-            {
-                return BadRequest(new TextResponse("Failed to update the team"));
-            }
-
-            return BadRequest(new TextResponse("Failed to remove"));
+            return Ok(new TextResponse("Player added Successfully"));
         }
 
         [HttpGet("{teamId}/players")]
         public async Task<IActionResult> GetPlayersInTeam(int teamId)
         {
-            var existingTeam = await _teamService.GetTeamById(teamId);
+            var existingTeam = await _teamService.GetTeamByIdAsync(teamId);
             if (existingTeam == null)
             {
                 return NotFound(new TextResponse("Team not found"));
             }
 
-            var playersInTeam = existingTeam.PlayerList;
+            var playersInTeam = existingTeam.Players;
 
             return Ok(playersInTeam);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateTeamManager(UpdateTeamManager model)
+        {
+            var updateManager= _managerService.GetManagerByIdAsync(model.ManagerId);
+            if (updateManager == null)
+            {
+                return BadRequest(new TextResponse("Invalid manager data"));
+            }
+
+            var existingTeam = await _teamService.GetTeamByIdAsync(model.TeamId);
+            if (existingTeam == null)
+            {
+                return BadRequest(new TextResponse("Team not found"));
+            }  
+
+            var newManager = model.ManagerId;          
+            return Ok(newManager);
         }
     }
 }

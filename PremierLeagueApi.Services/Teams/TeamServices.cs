@@ -67,51 +67,23 @@ public class TeamServices : ITeamService
         await _dbContext.SaveChangesAsync();
         return true;
     }
-    public async Task<bool> AddPlayerToTeamAsync(int teamId, int playerId)
+    public async Task<bool> UpdateTeamPlayerAsync(UpdateTeamPlayer model)
     {
-        var team = await _dbContext.Teams
-            .Include(t => t.PlayerList) 
-            .FirstOrDefaultAsync(t => t.Id == teamId);
+        var team = await _dbContext.Teams.FindAsync(model.TeamId);
 
         if (team == null)
         {
             return false; 
         }
 
-        var player = await _dbContext.Players
-            .FirstOrDefaultAsync(p => p.Id == playerId);
+        var player = await _dbContext.Players.FindAsync(model.Id);
 
         if (player == null)
         {
             return false; 
         }
 
-        team.PlayerList.Add(player);
-
-        await _dbContext.SaveChangesAsync();
-
-        return true;
-    }
-
-    public async Task<bool> RemovePlayerFromTeamAsync(int teamId, int playerId)
-    {
-        var team = await _dbContext.Teams
-            .Include(t => t.PlayerList) 
-            .FirstOrDefaultAsync(t => t.Id == teamId);
-
-        if (team == null)
-        {
-            return false; 
-        }
-
-        var player = team.PlayerList.FirstOrDefault(p => p.Id == playerId);
-
-        if (player == null)
-        {
-            return false; 
-        }
-
-        team.PlayerList.Remove(player);
+        player.TeamId = model.TeamId;
 
         await _dbContext.SaveChangesAsync();
 
@@ -120,8 +92,7 @@ public class TeamServices : ITeamService
 
     public async Task<List<PlayerEntity>> GetPlayersInTeamAsync(int teamId)
     {
-        return await _dbContext.Teams.PlayerList.ToList();
-
+        return await _dbContext.Players.Where(p => p.TeamId == teamId).ToListAsync();
     }
 
 
@@ -134,4 +105,28 @@ public class TeamServices : ITeamService
             await _dbContext.SaveChangesAsync();
         }
     }
+
+    public async Task<bool> UpdateTeamManagerAsync(UpdateTeamManager model)
+    {
+        var team = await _dbContext.Teams.FindAsync(model.TeamId);
+
+        if (team == null)
+        {
+            return false; 
+        }
+
+        var manager = await _dbContext.Managers.FindAsync(model.ManagerId);
+        
+        if (manager == null)
+        {
+            return false; 
+        }
+
+        team.ManagerId = model.ManagerId;
+
+        await _dbContext.SaveChangesAsync();
+
+        return true;
+    }
+
 }
