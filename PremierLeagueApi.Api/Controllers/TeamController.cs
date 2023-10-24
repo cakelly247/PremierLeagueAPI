@@ -32,7 +32,7 @@ namespace PremierLeagueApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetTeamById(int id)
+        public async Task<IActionResult> GetTeamById([FromRoute] int id)
         {
             var team = await _teamService.GetTeamByIdAsync(id);
             if (team == null)
@@ -43,7 +43,7 @@ namespace PremierLeagueApi.Controllers
         }
 
         [HttpGet("{name}")]
-        public async Task<IActionResult> GetTeamByName([FromQuery] string name)
+        public async Task<IActionResult> GetTeamByName([FromRoute] string name)
         {
             var team = await _teamService.GetTeamByNameAsync(name);
             if (team == null)
@@ -54,7 +54,7 @@ namespace PremierLeagueApi.Controllers
         }
 
         [HttpGet("{city}")]
-        public async Task<IActionResult> GetTeamsByCity([FromQuery] string city)
+        public async Task<IActionResult> GetTeamsByCity([FromRoute] string city)
         {
             var teams = await _teamService.GetTeamsByCityAsync(city);
             if (teams is null)
@@ -68,7 +68,7 @@ namespace PremierLeagueApi.Controllers
             return Ok(teams);
         }
 
-        [HttpPut]
+        [HttpPut("update")]
         public async Task<IActionResult> UpdateTeam([FromBody] UpdateTeam selectedTeam)
         {
             if (selectedTeam is null)
@@ -86,7 +86,7 @@ namespace PremierLeagueApi.Controllers
             return Ok(new TextResponse("Team has been successfully deleted."));
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateTeam([FromBody] CreateTeam selectedTeam)
         {
             if (selectedTeam is null)
@@ -98,7 +98,7 @@ namespace PremierLeagueApi.Controllers
             return Ok(new TextResponse("Team has been successfully created."));
         }
         
-        [HttpPost("{teamId}/addPlayer")]
+        [HttpPost("addremovePlayer")]
         public async Task<IActionResult> UpdateTeamPlayer([FromBody] UpdateTeamPlayer model)
         {
             if (model == null)
@@ -117,7 +117,7 @@ namespace PremierLeagueApi.Controllers
         }
 
         [HttpGet("{teamId}/players")]
-        public async Task<IActionResult> GetPlayersInTeam(int teamId)
+        public async Task<IActionResult> GetPlayersInTeam([FromRoute] int teamId)
         {
             var existingTeam = await _teamService.GetTeamByIdAsync(teamId);
             if (existingTeam == null)
@@ -128,8 +128,8 @@ namespace PremierLeagueApi.Controllers
             return Ok(playersInTeam);
         }
         
-        [HttpPost]
-        public async Task<IActionResult> UpdateTeamManager(UpdateTeamManager model)
+        [HttpPost("addmanager")]
+        public async Task<IActionResult> UpdateTeamManager([FromBody] UpdateTeamManager model)
         {
             var updateManager= _managerService.GetManagerByIdAsync(model.ManagerId);
             if (updateManager == null)
@@ -141,8 +141,8 @@ namespace PremierLeagueApi.Controllers
             {
                 return BadRequest(new TextResponse("Team not found"));
             }  
-            var newManager = model.ManagerId;          
-            return Ok(newManager);
+            // updateManager.TeamId = model.TeamId;          
+            return Ok();
         }
     }
 }

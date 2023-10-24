@@ -33,4 +33,11 @@ public class UserController : ControllerBase
 
         return BadRequest(new TextResponse("User could not be created."));
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        var users = await _userService.GetAllUsersAsync();
+        return Ok(users);
+    }
 }
