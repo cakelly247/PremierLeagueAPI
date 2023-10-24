@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using PremierLeagueApi.Services.Teams;
 using PremierLeagueApi.Models.Teams;
 using PremierLeagueApi.Models.Responses;
+using PremierLeagueApi.Models.Player;
+using PremierLeagueApi.Services.Player;
 
 namespace PremierLeagueApi.Controllers
 {
@@ -10,10 +12,13 @@ namespace PremierLeagueApi.Controllers
     public class TeamController : ControllerBase
     {
         private readonly ITeamService _teamService;
+        private readonly IPlayerService _playerService;
 
-        public TeamController(ITeamService teamService)
+        public TeamController(ITeamService teamService,
+                            IPlayerService playerService)
         {
             _teamService = teamService;
+            _playerService = playerService;
         }
 
         [HttpGet]
@@ -93,67 +98,56 @@ namespace PremierLeagueApi.Controllers
             await _teamService.CreateTeamAsync(selectedTeam);
             return Ok(new TextResponse("Team has been successfully created."));
         }
-       
-       [HttpPost("{teamId}/addPlayer")]
-        public async Task<IActionResult> AddPlayerToTeam(int teamId, [FromBody] PlayerModel newPlayer)
+        
+        [HttpPost("{teamId}/addPlayer")]
+        public async Task<IActionResult> AddPlayerToTeam(int teamId, int playerId)
         {
+            var newPlayer = _playerService.GetPlayerByIdAsync(playerId);
             if (newPlayer == null)
             {
                 return BadRequest(new TextResponse("Invalid player data"));
             }
 
-
-            var existingTeam = await _teamService.GetTeamById(teamId);
+            var existingTeam = await _teamService.GetTeamByIdAsync(teamId);
             if (existingTeam == null)
             {
                 return BadRequest(new TextResponse("Team not found"));
             }
 
-            var createdPlayer = await _playerService.CreatePlayer(newPlayer);
-            existingTeam.PlayerList.Add(createdPlayer);
-
-            await _teamService.UpdateTeam(teamId, existingTeam);
-
-            return Ok(new TextResponse("Player added Successfully"))
+            var createdPlayer = await _playerService.CreatePlayerAsync(newPlayer);
+            
+            return Ok(new TextResponse("Player added Successfully"));
         }
 
         [HttpDelete("{teamId}/removePlayer/{playerId}")]
         public async Task<IActionResult> RemovePlayerFromTeam(int teamId, int playerId)
         {
-            var existingTeam = await _teamService.GetTeamById(teamId);
+            var existingTeam = await _teamService.GetTeamByIdAsync(teamId);
             if (existingTeam == null)
             {
                 return BadRequest(new TextResponse("Team not found"));
             }
 
-            var playerToRemove = existingTeam.PlayerList.FirstOrDefault(p => p.Id == playerId);
+            var playerToRemove = existingTeam.Players!.FirstOrDefault(p => p.Id == playerId);
             if (playerToRemove == null)
             {
                 return BadRequest(new TextResponse("Player not found in the team"));
             }
 
-            existingTeam.PlayerList.Remove(playerToRemove);
-
-            var result = await _teamService.UpdateTeam(teamId, existingTeam);
-
-            if (!result)
-            {
-                return BadRequest(new TextResponse("Failed to update the team"));
-            }
-
-            return BadRequest(new TextResponse("Failed to remove"));
+            existingTeam.Players!.Remove(playerToRemove);
+            return Ok(new TextResponse("Player removed successfully"));
         }
 
         [HttpGet("{teamId}/players")]
         public async Task<IActionResult> GetPlayersInTeam(int teamId)
         {
-            var existingTeam = await _teamService.GetTeamById(teamId);
+            var existingTeam = await _teamService.GetTeamByIdAsync(teamId);
             if (existingTeam == null)
             {
                 return NotFound(new TextResponse("Team not found"));
             }
 
-            var playersInTeam = existingTeam.PlayerList;
+            var playersInTeam = existingTeam.Players;
 
             return Ok(playersInTeam);
         }

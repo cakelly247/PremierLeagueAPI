@@ -70,8 +70,8 @@ public class TeamServices : ITeamService
     public async Task<bool> AddPlayerToTeamAsync(int teamId, int playerId)
     {
         var team = await _dbContext.Teams
-            .Include(t => t.PlayerList) 
-            .FirstOrDefaultAsync(t => t.Id == teamId);
+            .Include(t => t.Players) 
+            .FirstOrDefaultAsync(t => t.TeamId == teamId);
 
         if (team == null)
         {
@@ -86,7 +86,7 @@ public class TeamServices : ITeamService
             return false; 
         }
 
-        team.PlayerList.Add(player);
+        team.Players!.Add(player);
 
         await _dbContext.SaveChangesAsync();
 
@@ -96,22 +96,22 @@ public class TeamServices : ITeamService
     public async Task<bool> RemovePlayerFromTeamAsync(int teamId, int playerId)
     {
         var team = await _dbContext.Teams
-            .Include(t => t.PlayerList) 
-            .FirstOrDefaultAsync(t => t.Id == teamId);
+            .Include(t => t.Players) 
+            .FirstOrDefaultAsync(t => t.TeamId == teamId);
 
         if (team == null)
         {
             return false; 
         }
 
-        var player = team.PlayerList.FirstOrDefault(p => p.Id == playerId);
+        var player = team.Players!.FirstOrDefault(p => p.Id == playerId);
 
         if (player == null)
         {
             return false; 
         }
 
-        team.PlayerList.Remove(player);
+        team.Players!.Remove(player);
 
         await _dbContext.SaveChangesAsync();
 
@@ -120,10 +120,8 @@ public class TeamServices : ITeamService
 
     public async Task<List<PlayerEntity>> GetPlayersInTeamAsync(int teamId)
     {
-        return await _dbContext.Teams.PlayerList.ToList();
-
+        return await _dbContext.Players.Where(p => p.TeamId == teamId).ToListAsync();
     }
-
 
     public async Task DeleteTeamAsync(int teamId)
     {
