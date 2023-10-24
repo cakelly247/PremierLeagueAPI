@@ -4,8 +4,6 @@ namespace PremierLeagueApi.Models.Teams;
 
 public class CreateTeam
 {
-    public int TeamId { get; set; }
-
     [MaxLength(100)]
     public string TeamName {get; set;} = string.Empty;
 

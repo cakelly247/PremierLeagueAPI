@@ -70,23 +70,17 @@ public class TeamServices : ITeamService
     public async Task<bool> UpdateTeamPlayerAsync(UpdateTeamPlayer model)
     {
         var team = await _dbContext.Teams.FindAsync(model.TeamId);
-
         if (team == null)
         {
             return false; 
         }
-
         var player = await _dbContext.Players.FindAsync(model.Id);
-
         if (player == null)
         {
             return false; 
         }
-
         player.TeamId = model.TeamId;
-
         await _dbContext.SaveChangesAsync();
-
         return true;
     }
 
@@ -94,8 +88,7 @@ public class TeamServices : ITeamService
     {
         return await _dbContext.Players.Where(p => p.TeamId == teamId).ToListAsync();
     }
-
-
+    
     public async Task DeleteTeamAsync(int teamId)
     {
         var team = await GetTeamByIdAsync(teamId);
@@ -105,28 +98,21 @@ public class TeamServices : ITeamService
             await _dbContext.SaveChangesAsync();
         }
     }
-
+    
     public async Task<bool> UpdateTeamManagerAsync(UpdateTeamManager model)
     {
         var team = await _dbContext.Teams.FindAsync(model.TeamId);
-
         if (team == null)
         {
             return false; 
         }
-
         var manager = await _dbContext.Managers.FindAsync(model.ManagerId);
-        
         if (manager == null)
         {
             return false; 
         }
-
         team.ManagerId = model.ManagerId;
-
         await _dbContext.SaveChangesAsync();
-
         return true;
     }
-
 }

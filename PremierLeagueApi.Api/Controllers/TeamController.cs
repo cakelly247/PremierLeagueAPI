@@ -6,6 +6,7 @@ using PremierLeagueApi.Services.Player;
 using PremierLeagueApi.Services.ManagerService;
 using PremierLeagueApi.Models.Player;
 
+
 namespace PremierLeagueApi.Controllers
 {
     [Route("api/teams")]
@@ -38,7 +39,6 @@ namespace PremierLeagueApi.Controllers
             {
                 return BadRequest();
             }
-
             return Ok(team);
         }
 
@@ -50,7 +50,6 @@ namespace PremierLeagueApi.Controllers
             {
                 return BadRequest(new TextResponse($"Unable to find Team:{name}"));
             }
-
             return Ok();
         }
 
@@ -66,7 +65,6 @@ namespace PremierLeagueApi.Controllers
             {
                 return NotFound(new TextResponse($"{city} currently has no Teams." ));
             }
-
             return Ok(teams);
         }
 
@@ -77,7 +75,6 @@ namespace PremierLeagueApi.Controllers
             {
                 return BadRequest(new TextResponse("Unable to find/update Team."));
             }
-
             await _teamService.UpdateTeamAsync(selectedTeam);
             return Ok(new TextResponse("Team has been successfully updated."));
         }
@@ -108,15 +105,12 @@ namespace PremierLeagueApi.Controllers
             {
                 return BadRequest(new TextResponse("Invalid player data"));
             }
-
             var team = await _teamService.GetTeamByIdAsync(model.TeamId);
             if (team == null)
             {
                 return BadRequest(new TextResponse("Team not found"));
             }
-
             await _playerService.UpdateTeamPlayerAsync(model);
-
             return Ok(new TextResponse("Player added Successfully"));
         }
 
@@ -128,11 +122,10 @@ namespace PremierLeagueApi.Controllers
             {
                 return NotFound(new TextResponse("Team not found"));
             }
-
             var playersInTeam = existingTeam.Players;
-
             return Ok(playersInTeam);
         }
+        
         [HttpPost]
         public async Task<IActionResult> UpdateTeamManager(UpdateTeamManager model)
         {
@@ -141,13 +134,11 @@ namespace PremierLeagueApi.Controllers
             {
                 return BadRequest(new TextResponse("Invalid manager data"));
             }
-
             var existingTeam = await _teamService.GetTeamByIdAsync(model.TeamId);
             if (existingTeam == null)
             {
                 return BadRequest(new TextResponse("Team not found"));
             }  
-
             var newManager = model.ManagerId;          
             return Ok(newManager);
         }
