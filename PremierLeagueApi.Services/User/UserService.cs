@@ -44,5 +44,10 @@ namespace PremierLeagueApi.Services.User
         {
             return _context.Users.AnyAsync(e => e.Email == email);
         }
+
+        public async Task<List<UserEntity>> GetAllUsersAsync()
+        {
+            return await _context.Users.ToListAsync();
+        }
     }
 }
