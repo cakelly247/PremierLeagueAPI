@@ -1,12 +1,7 @@
 using PremierLeagueApi.Services.User;
 using PremierLeagueApi.Data.Entities;
 using PremierLeagueApi.Services;
-using PremierLeagueApi.Models;
-using PremierLeagueApi.Api;
-using PremierLeagueApi.Api.Controllers;
 using PremierLeagueApi.Data;
-using PremierLeagueApi.Models.User;
-using PremierLeagueApi.Models.Responses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PremierLeagueApi.Services.Player;

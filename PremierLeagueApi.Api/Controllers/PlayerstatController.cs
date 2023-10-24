@@ -1,8 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using PremierLeagueApi.Data.Entities;
-using PremierLeagueApi.Services;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace PremierLeagueApi.Controllers
 {

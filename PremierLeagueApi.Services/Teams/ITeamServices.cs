@@ -1,4 +1,3 @@
-using PremierLeagueApi.Data;
 using PremierLeagueApi.Data.Entities;
 using PremierLeagueApi.Models.Teams;
 

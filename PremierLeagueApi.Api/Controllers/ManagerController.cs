@@ -1,13 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using PremierLeagueApi.Data;
 using PremierLeagueApi.Data.Entities;
 using PremierLeagueApi.Models.ManagersModel;
 using PremierLeagueApi.Models.Responses;
-using PremierLeagueApi.Services;
 using PremierLeagueApi.Services.ManagerService;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace PremierLeagueApi.Controllers
 {
