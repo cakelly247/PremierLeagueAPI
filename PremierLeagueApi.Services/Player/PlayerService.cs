@@ -63,6 +63,20 @@ namespace PremierLeagueApi.Services.Player
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> UpdateTeamPlayerAsync(UpdateTeamPlayer model)
+        {
+            var player = await _context.Players.FindAsync(model.Id);
+            if (player is null)
+            {
+                return false;
+            }
+
+            player.TeamId = model.TeamId;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
         public async Task<bool> DeletePlayerAsync(int playerId)
         {
             var player = await _context.Players.FindAsync(playerId);
