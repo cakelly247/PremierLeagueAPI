@@ -84,14 +84,78 @@ namespace PremierLeagueApi.Controllers
         public async Task<IActionResult> CreateTeam([FromBody] TeamModel newTeam)
         {
             var createdTeam = await _teamService.CreateTeam(newTeam);
-            if(createdTeam == null)
+            if (createdTeam == null)
             {
                 return BadRequest("Failed to create team")
             }
 
             return TextResponse response = new response("Team created Successfully")
         }
-        //List method to list players
-        //add and delete player
+
+        [HttpPost("{teamId}/addPlayer")]
+        public async Task<IActionResult> AddPlayerToTeam(int teamId, [FromBody] PlayerModel newPlayer)
+        {
+            if (newPlayer == null)
+            {
+                return BadRequest("Invalid player data");
+            }
+
+
+            var existingTeam = await _teamService.GetTeamById(teamId);
+            if (existingTeam == null)
+            {
+                return BadRequest("Team not found");
+            }
+
+            var createdPlayer = await _playerService.CreatePlayer(newPlayer);
+            existingTeam.PlayerList.Add(createdPlayer);
+
+            await _teamService.UpdateTeam(teamId, existingTeam);
+
+            return TextResponse response = new response("Player added Successfully")
+        }
+
+        [HttpDelete("{teamId}/removePlayer/{playerId}")]
+        public async Task<IActionResult> RemovePlayerFromTeam(int teamId, int playerId)
+        {
+            var existingTeam = await _teamService.GetTeamById(teamId);
+            if (existingTeam == null)
+            {
+                return BadRequest("Team not found");
+            }
+
+            var playerToRemove = existingTeam.PlayerList.FirstOrDefault(p => p.Id == playerId);
+            if (playerToRemove == null)
+            {
+                return BadRequest("Player not found in the team");
+            }
+
+            existingTeam.PlayerList.Remove(playerToRemove);
+
+            var result = await _teamService.UpdateTeam(teamId, existingTeam);
+
+            if (!result)
+            {
+                return BadRequest("Failed to update the team");
+            }
+
+            return BadRequest("Failed to remove");
+        }
+
+        [HttpGet("{teamId}/players")]
+        public async Task<IActionResult> GetPlayersInTeam(int teamId)
+        {
+            var existingTeam = await _teamService.GetTeamById(teamId);
+            if (existingTeam == null)
+            {
+                return NotFound("Team not found");
+            }
+
+            var playersInTeam = existingTeam.PlayerList;
+
+            return Ok(playersInTeam);
+        }
+
+
     }
 }

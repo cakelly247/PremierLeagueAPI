@@ -23,9 +23,9 @@ public class TeamServices : ITeamService
             Wins = newTeam.Wins,
             Losses = newTeam.Losses
         };
-    _dbContext.Teams.Add(teamEntity);
-    await _dbContext.SaveChangesAsync();
-    return teamEntity;
+        _dbContext.Teams.Add(teamEntity);
+        await _dbContext.SaveChangesAsync();
+        return teamEntity;
     }
 
     public async Task<List<TeamEntity>> GetAllTeamsAsync()
@@ -48,10 +48,18 @@ public class TeamServices : ITeamService
         return await _dbContext.Teams.Where(t => t.City == city).ToListAsync();
     }
 
-        //Change Update Team like Germaynes and create update team models
-    public async Task<bool> UpdateTeamAsync(int teamId, TeamEntity updatedTeam)
+    public async Task<bool> UpdateTeamAsync(UpdateTeam teamModel)
     {
-        return false;
+        var team = await _context.Team.FindAsync(teamModel.TeamId);
+        if (team is null)
+            return false;
+
+        team.Name = teamModel.Name;
+        team.Country = teamModel.Country;
+        team.TeamId = teamModel.TeamId;
+
+        await _context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<bool> DeleteTeamAsync(int teamId)
@@ -66,4 +74,61 @@ public class TeamServices : ITeamService
         await _dbContext.SaveChangesAsync();
         return true;
     }
+    public async Task<bool> AddPlayerToTeamAsync(int teamId, int playerId)
+    {
+        var team = await _dbContext.Teams
+            .Include(t => t.PlayerList) 
+            .FirstOrDefaultAsync(t => t.Id == teamId);
+
+        if (team == null)
+        {
+            return false; 
+        }
+
+        var player = await _dbContext.Players
+            .FirstOrDefaultAsync(p => p.Id == playerId);
+
+        if (player == null)
+        {
+            return false; 
+        }
+
+        team.PlayerList.Add(player);
+
+        await _dbContext.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> RemovePlayerFromTeamAsync(int teamId, int playerId)
+    {
+        var team = await _dbContext.Teams
+            .Include(t => t.PlayerList) 
+            .FirstOrDefaultAsync(t => t.Id == teamId);
+
+        if (team == null)
+        {
+            return false; 
+        }
+
+        var player = team.PlayerList.FirstOrDefault(p => p.Id == playerId);
+
+        if (player == null)
+        {
+            return false; 
+        }
+
+        team.PlayerList.Remove(player);
+
+        await _dbContext.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<List<PlayerEntity>> GetPlayersInTeamAsync(int teamId)
+    {
+        return await _dbContext.Teams.PlayerList.ToList();
+
+    }
+
 }

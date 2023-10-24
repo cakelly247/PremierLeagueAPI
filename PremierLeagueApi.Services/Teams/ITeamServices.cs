@@ -5,10 +5,14 @@ namespace PremierLeagueApi.Services.Teams;
 
 public interface ITeamService
 {
-    Task<List<TeamEntity>> GetAllTeams();
-        Task<TeamEntity?> GetTeamById(int teamId);
-        Task<TeamEntity?> GetTeamByName(string teamName);
-        Task<List<TeamEntity>> GetTeamsByCity(string city);
-        Task<bool> UpdateTeam(int teamId, TeamEntity updatedTeam);
-        Task<bool> DeleteTeam(int teamId);
+    Task<List<TeamEntity>> GetAllTeamsAsync();
+        Task<TeamEntity?> GetTeamByIdAsync(int teamId);
+        Task<TeamEntity?> GetTeamByNameAsync(string teamName);
+        Task<List<TeamEntity>> GetTeamsByCityAsync(string city);
+        Task<bool> UpdateTeamAsync(int teamId, TeamEntity updatedTeam);
+        Task<bool> DeleteTeamAsync(int teamId);
+        Task<TeamEntity> CreateTeamAsync(TeamModel, newTeam);
+        Task<bool> AddPlayerToTeamAsync(int teamId, int playerId);
+        Task<bool> RemovePlayerFromTeamAsync(int teamId, int playerId);
+        Task<List<PlayerEntity>> GetPlayersInTeamAsync(int teamId);
 }
