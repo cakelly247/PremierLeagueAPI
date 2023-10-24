@@ -37,15 +37,15 @@ namespace PremierLeagueApi.Services.ManagerService
             return success != 0 ? true : false;
         }
 
-        public async Task<bool> UpdateManagerAsync(UpdateManager managerModel)
+        public async Task<bool> UpdateManagerAsync(UpdateManager selectedManager)
         {
-            var manager = await _context.Managers.FindAsync(managerModel.ManagerId);
+            var manager = await _context.Managers.FindAsync(selectedManager.ManagerId);
             if (manager is null)
                 return false;
 
-            manager.Name = managerModel.Name;
-            manager.Country = managerModel.Country;
-            manager.TeamId = managerModel.TeamId;
+            manager.Name = selectedManager.Name;
+            manager.Country = selectedManager.Country;
+            manager.TeamId = selectedManager.TeamId;
 
             await _context.SaveChangesAsync();
             return true;

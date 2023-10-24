@@ -5,7 +5,7 @@ namespace PremierLeagueApi.Services.ManagerService;
 
 public interface IManagerService
 {
-    Task<ManagerEntity> GetManagerByIdAsync(int managerId);
+    Task<ManagerEntity?> GetManagerByIdAsync(int managerId);
     Task<List<ManagerEntity>> GetAllManagersAsync();
     Task<bool> CreateManagerAsync(CreateManager managerModel);
     Task<bool> UpdateManagerAsync(UpdateManager managerModel);

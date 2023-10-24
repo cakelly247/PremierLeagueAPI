@@ -10,7 +10,7 @@ namespace PremierLeagueApi.Data
 
         public DbSet<TeamEntity> Teams { get; set; }        
         public DbSet<ManagerEntity> Managers { get; set; }
-        public DbSet<PlayerStats> PlayerStats { get; set; } 
+        public DbSet<PlayerStatsEntity> PlayerStats { get; set; } 
         public DbSet<PlayerEntity> Players { get; set; }
         public PLDbContext(DbContextOptions<PLDbContext> options)
 

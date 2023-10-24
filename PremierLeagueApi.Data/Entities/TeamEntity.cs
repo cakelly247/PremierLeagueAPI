@@ -6,7 +6,7 @@ namespace PremierLeagueApi.Data.Entities;
 public class TeamEntity
 {
     [Key]
-    public int Id { get; set; }
+    public int TeamId { get; set; }
 
     [Required, MaxLength(100)]
     public string TeamName {get; set;} = string.Empty;
@@ -19,7 +19,7 @@ public class TeamEntity
     public int Losses {get; set;} = 0;
     
     [ForeignKey("Managers")]
-    public int ManagerId { get; set; } = 0;
+    public int ManagerId { get; set; } = 1;
     
     public List<PlayerEntity>? Players {get; set;}
 }

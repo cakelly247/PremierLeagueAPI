@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using PremierLeagueApi.Data;
 using PremierLeagueApi.Data.Entities;
+using PremierLeagueApi.Models.Teams;
 using PremierLeagueApi.Services.Teams;
 
 namespace PremierLeagueApi.Services;
@@ -14,7 +16,7 @@ public class TeamServices : ITeamService
         _dbContext = dbContext;
     }
 
-    public async Task<TeamEntity> CreateTeamAsync(TeamModel newTeam)
+    public async Task<bool> CreateTeamAsync(CreateTeam newTeam)
     {
         var teamEntity = new TeamEntity
         {
@@ -23,9 +25,10 @@ public class TeamServices : ITeamService
             Wins = newTeam.Wins,
             Losses = newTeam.Losses
         };
-    _dbContext.Teams.Add(teamEntity);
-    await _dbContext.SaveChangesAsync();
-    return teamEntity;
+        
+        _dbContext.Teams.Add(teamEntity);
+        var success = await _dbContext.SaveChangesAsync();
+        return success != 0 ? true : false;
     }
 
     public async Task<List<TeamEntity>> GetAllTeamsAsync()
@@ -49,21 +52,31 @@ public class TeamServices : ITeamService
     }
 
         //Change Update Team like Germaynes and create update team models
-    public async Task<bool> UpdateTeamAsync(int teamId, TeamEntity updatedTeam)
+    public async Task<bool> UpdateTeamAsync(UpdateTeam selectedTeam)
     {
-        return false;
-    }
-
-    public async Task<bool> DeleteTeamAsync(int teamId)
-    {
-        var team = await _dbContext.Teams.FindAsync(teamId);
-        if (team == null)
+        var team = await _dbContext.Teams.FindAsync(selectedTeam);
+        if (team is null)
         {
             return false;
         }
 
-        _dbContext.Teams.Remove(team);
+        team.TeamName = selectedTeam.TeamName;
+        team.City = selectedTeam.City;
+        team.Wins = selectedTeam.Wins;
+        team.Losses = selectedTeam.Losses;
+        team.ManagerId = selectedTeam.ManagerId;
+
         await _dbContext.SaveChangesAsync();
         return true;
+    }
+
+    public async Task DeleteTeamAsync(int teamId)
+    {
+        var team = await GetTeamByIdAsync(teamId);
+        if (team is not null)
+        {
+            _dbContext.Teams.Remove(team);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
