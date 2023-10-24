@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using PremierLeagueApi.Data;
 using PremierLeagueApi.Data.Entities;
 using PremierLeagueApi.Models.Player;
+using PremierLeagueApi.Models.Teams;
 
 namespace PremierLeagueApi.Services.Player
 {

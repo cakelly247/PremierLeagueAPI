@@ -97,8 +97,8 @@ namespace PremierLeagueApi.Controllers
             await _teamService.CreateTeamAsync(selectedTeam);
             return Ok(new TextResponse("Team has been successfully created."));
         }
-       
-       [HttpPost("{teamId}/addPlayer")]
+        
+        [HttpPost("{teamId}/addPlayer")]
         public async Task<IActionResult> UpdateTeamPlayer([FromBody] UpdateTeamPlayer model)
         {
             if (model == null)
