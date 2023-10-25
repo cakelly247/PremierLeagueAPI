@@ -9,17 +9,15 @@ public class TeamEntity
     public int TeamId { get; set; }
 
     [Required, MaxLength(100)]
-    public string TeamName {get; set;} = string.Empty;
+    public string TeamName {get; set;}
 
     [Required, MaxLength (100)]
-    public string City {get; set;} = string.Empty;
+    public string City {get; set;}
 
     public int Wins {get; set;} = 0;
 
     public int Losses {get; set;} = 0;
     
-    public int ManagerId { get; set; } = 1;
-    
-    public List<PlayerEntity>? Players {get; set;}
+    public virtual List<PlayerEntity>? Players {get; set;}
 }
 

@@ -30,9 +30,10 @@ namespace PremierLeagueApi.Services.ManagerService
             {
                 Name = managerModel.Name,
                 Country = managerModel.Country,
+                TeamId = 13
             };
 
-            await _context.AddAsync(entity);
+            await _context.Managers.AddAsync(entity);
             var success = await _context.SaveChangesAsync();
             return success != 0 ? true : false;
         }

@@ -14,6 +14,4 @@ public interface ITeamService
     Task DeleteTeamAsync(int teamId);
     Task<bool> UpdateTeamPlayerAsync(UpdateTeamPlayer model);
     Task<List<PlayerEntity>> GetPlayersInTeamAsync(int teamId);
-    Task<bool> UpdateTeamManagerAsync(UpdateTeamManager model);
-
 }

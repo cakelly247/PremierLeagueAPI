@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PremierLeagueApi.Data;
 
@@ -11,9 +12,11 @@ using PremierLeagueApi.Data;
 namespace PremierLeagueApi.Data.Migrations
 {
     [DbContext(typeof(PLDbContext))]
-    partial class PLDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231025160941_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,8 +180,7 @@ namespace PremierLeagueApi.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("TeamId")
-                        .IsRequired()
+                    b.Property<int>("TeamId")
                         .HasColumnType("int");
 
                     b.HasKey("ManagerId");
@@ -258,6 +260,9 @@ namespace PremierLeagueApi.Data.Migrations
                     b.Property<int>("Losses")
                         .HasColumnType("int");
 
+                    b.Property<int>("ManagerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("TeamName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -269,6 +274,17 @@ namespace PremierLeagueApi.Data.Migrations
                     b.HasKey("TeamId");
 
                     b.ToTable("Teams");
+
+                    b.HasData(
+                        new
+                        {
+                            TeamId = 1,
+                            City = "Nowhere",
+                            Losses = 0,
+                            ManagerId = 1,
+                            TeamName = "UnassignedTeam",
+                            Wins = 0
+                        });
                 });
 
             modelBuilder.Entity("PremierLeagueApi.Data.Entities.UserEntity", b =>

@@ -5,11 +5,10 @@ namespace PremierLeagueApi.Data.Entities;
 
 public class PlayerStatsEntity
 {
-    [Key]
+    [Key, ForeignKey("Player")]
     public int PlayerId { get; set; } 
 
-    [ForeignKey("PlayerId")]
-    public PlayerEntity Player { get; set; } = new();
+    public virtual PlayerEntity Player { get; set; }
 
     public int Goals { get; set; } = 0;
 

@@ -12,8 +12,8 @@ using PremierLeagueApi.Data;
 namespace PremierLeagueApi.Data.Migrations
 {
     [DbContext(typeof(PLDbContext))]
-    [Migration("20231025054615_Initial")]
-    partial class Initial
+    [Migration("20231025172457_team entity 'managerId' removed")]
+    partial class teamentitymanagerIdremoved
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -260,9 +260,6 @@ namespace PremierLeagueApi.Data.Migrations
                     b.Property<int>("Losses")
                         .HasColumnType("int");
 
-                    b.Property<int>("ManagerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("TeamName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -274,17 +271,6 @@ namespace PremierLeagueApi.Data.Migrations
                     b.HasKey("TeamId");
 
                     b.ToTable("Teams");
-
-                    b.HasData(
-                        new
-                        {
-                            TeamId = 1,
-                            City = "Nowhere",
-                            Losses = 0,
-                            ManagerId = 1,
-                            TeamName = "UnassignedTeam",
-                            Wins = 0
-                        });
                 });
 
             modelBuilder.Entity("PremierLeagueApi.Data.Entities.UserEntity", b =>

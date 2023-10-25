@@ -17,18 +17,5 @@ namespace PremierLeagueApi.Data
 
             : base(options) { }
             
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            var team = new TeamEntity
-                {
-                    TeamId = 1,
-                    TeamName = "UnassignedTeam",
-                    City = "Nowhere"
-                };
-            modelBuilder.Entity<TeamEntity>().HasData(team);
-
-            base.OnModelCreating(modelBuilder);
-        }
     }
 }
