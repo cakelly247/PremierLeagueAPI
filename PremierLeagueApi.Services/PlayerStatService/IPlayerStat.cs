@@ -1,10 +1,9 @@
 using PremierLeagueApi.Data.Entities;
+using PremierLeagueApi.Models.PlayerStatsModel;
+using System.Threading.Tasks;
 
 public interface IPlayerStatsService
 {
-    Task<PlayerStatsEntity?> GetPlayerStatsByIdAsync(int playerId);
-    Task<List<PlayerStatsEntity>> GetAllPlayerStatsAsync();
-    Task CreatePlayerStatsAsync(PlayerStatsEntity playerStats);
-    Task UpdatePlayerStatsAsync(PlayerStatsEntity playerStats);
-    Task DeletePlayerStatsAsync(int playerId);
+    Task<bool> UpdatePlayerStats( UpdatePlayerStats updatePlayerStats);
+    Task<PlayerStatsEntity?> GetPlayerStats(int playerId);
 }

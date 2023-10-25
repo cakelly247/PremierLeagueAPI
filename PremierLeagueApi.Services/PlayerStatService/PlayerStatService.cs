@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using PremierLeagueApi.Data;
 using PremierLeagueApi.Data.Entities;
+using PremierLeagueApi.Models.PlayerStatsModel;
+using System;
+using System.Threading.Tasks;
 
 public class PlayerStatsService : IPlayerStatsService
 {
@@ -11,35 +14,26 @@ public class PlayerStatsService : IPlayerStatsService
         _context = context;
     }
 
-    public async Task<PlayerStatsEntity?> GetPlayerStatsByIdAsync(int playerId)
+    public async Task<bool> UpdatePlayerStats( UpdatePlayerStats model)
+    {
+        var player = await _context.PlayerStats.FindAsync(model.PlayerId);
+
+        if (player == null)
+        {
+            return false;
+        }
+
+        model.Goals = player.Goals;
+        model.Assists = player.Assists;
+        model.Saves = player.Saves;
+        
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<PlayerStatsEntity?> GetPlayerStats(int playerId)
     {
         return await _context.PlayerStats.FindAsync(playerId);
     }
 
-    public async Task<List<PlayerStatsEntity>> GetAllPlayerStatsAsync()
-    {
-        return await _context.PlayerStats.ToListAsync();
-    }
-
-    public async Task CreatePlayerStatsAsync(PlayerStatsEntity playerStats)
-    {
-        _context.PlayerStats.Add(playerStats);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task UpdatePlayerStatsAsync(PlayerStatsEntity playerStats)
-    {
-        _context.PlayerStats.Update(playerStats);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task DeletePlayerStatsAsync(int playerId)
-    {
-        var playerStats = await GetPlayerStatsByIdAsync(playerId);
-        if (playerStats != null)
-        {
-            _context.PlayerStats.Remove(playerStats);
-            await _context.SaveChangesAsync();
-        }
-    }
 }
