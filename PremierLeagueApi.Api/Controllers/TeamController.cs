@@ -42,7 +42,7 @@ namespace PremierLeagueApi.Controllers
             return Ok(team);
         }
 
-        [HttpGet("{name}")]
+        [HttpGet("{name}:string")]
         public async Task<IActionResult> GetTeamByName([FromRoute] string name)
         {
             var team = await _teamService.GetTeamByNameAsync(name);
@@ -53,7 +53,7 @@ namespace PremierLeagueApi.Controllers
             return Ok();
         }
 
-        [HttpGet("{city}")]
+        [HttpGet("{city}:string")]
         public async Task<IActionResult> GetTeamsByCity([FromRoute] string city)
         {
             var teams = await _teamService.GetTeamsByCityAsync(city);
@@ -116,7 +116,7 @@ namespace PremierLeagueApi.Controllers
             return Ok(new TextResponse("Player added Successfully"));
         }
 
-        [HttpGet("{teamId}/players")]
+        [HttpGet("getplayers/{teamId}")]
         public async Task<IActionResult> GetPlayersInTeam([FromRoute] int teamId)
         {
             var existingTeam = await _teamService.GetTeamByIdAsync(teamId);

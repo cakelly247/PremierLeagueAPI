@@ -21,11 +21,15 @@ namespace PremierLeagueApi.Controllers
         public async Task<ActionResult<IEnumerable<ManagerEntity>>> GetAllManagers()
         {
             var managers = await _managerService.GetAllManagersAsync();
+            if (managers.Count == 0)
+            {
+                return NotFound(new TextResponse("There are currently no managers in the database."));
+            }
             return Ok(managers);
         }
 
         [HttpGet("{managerId}")]
-        public async Task<ActionResult<ManagerEntity>> GetManager(int managerId)
+        public async Task<ActionResult<ManagerEntity>> GetManager([FromRoute] int managerId)
         {
             var manager = await _managerService.GetManagerByIdAsync(managerId);
 
@@ -38,7 +42,6 @@ namespace PremierLeagueApi.Controllers
         }
 
         [HttpPost]
-        [Route("Create")]
         public async Task<IActionResult> CreateManager([FromBody] CreateManager managerModel)
         {
             if (managerModel is null)
@@ -65,10 +68,10 @@ namespace PremierLeagueApi.Controllers
         }
 
         [HttpDelete("{managerId}")]
-        public async Task<IActionResult> DeleteManager(int managerId)
+        public async Task<IActionResult> DeleteManager([FromRoute] int managerId)
         {
             await _managerService.DeleteManagerAsync(managerId);
-            return NoContent();
+            return Ok(new TextResponse("Manager deleted successfully."));
         }
     }
 }

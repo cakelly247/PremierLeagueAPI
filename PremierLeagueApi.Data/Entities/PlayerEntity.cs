@@ -23,7 +23,6 @@ namespace PremierLeagueApi.Data.Entities
 
         public int TeamId { get; set; } = 1;
 
-        [ForeignKey("TeamId")]
-        public TeamEntity Team { get; set; } = new();
+        public virtual TeamEntity Team { get; set; }
     }
 }

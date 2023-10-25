@@ -52,7 +52,7 @@ public class TeamServices : ITeamService
 
     public async Task<bool> UpdateTeamAsync(UpdateTeam selectedTeam)
     {
-        var team = await _dbContext.Teams.FindAsync(selectedTeam);
+        var team = await _dbContext.Teams.FindAsync(selectedTeam.TeamId);
         if (team is null)
         {
             return false;
@@ -62,7 +62,6 @@ public class TeamServices : ITeamService
         team.City = selectedTeam.City;
         team.Wins = selectedTeam.Wins;
         team.Losses = selectedTeam.Losses;
-        team.ManagerId = selectedTeam.ManagerId;
 
         await _dbContext.SaveChangesAsync();
         return true;
@@ -99,20 +98,20 @@ public class TeamServices : ITeamService
         }
     }
     
-    public async Task<bool> UpdateTeamManagerAsync(UpdateTeamManager model)
-    {
-        var team = await _dbContext.Teams.FindAsync(model.TeamId);
-        if (team == null)
-        {
-            return false; 
-        }
-        var manager = await _dbContext.Managers.FindAsync(model.ManagerId);
-        if (manager == null)
-        {
-            return false; 
-        }
-        team.ManagerId = model.ManagerId;
-        await _dbContext.SaveChangesAsync();
-        return true;
-    }
+    // public async Task<bool> UpdateTeamManagerAsync(UpdateTeamManager model)
+    // {
+    //     var team = await _dbContext.Teams.FindAsync(model.TeamId);
+    //     if (team == null)
+    //     {
+    //         return false; 
+    //     }
+    //     var manager = await _dbContext.Managers.FindAsync(model.ManagerId);
+    //     if (manager == null)
+    //     {
+    //         return false; 
+    //     }
+    //     team.ManagerId = model.ManagerId;
+    //     await _dbContext.SaveChangesAsync();
+    //     return true;
+    // }
 }
