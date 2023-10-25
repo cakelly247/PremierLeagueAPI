@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using PremierLeagueApi.Data.Entities;
 
 namespace PremierLeagueApi.Data
@@ -19,9 +20,15 @@ namespace PremierLeagueApi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            var team = new TeamEntity
+                {
+                    TeamId = 1,
+                    TeamName = "UnassignedTeam",
+                    City = "Nowhere"
+                };
+            modelBuilder.Entity<TeamEntity>().HasData(team);
 
-            modelBuilder.Entity<UserEntity>().ToTable("Users");
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

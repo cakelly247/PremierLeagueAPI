@@ -182,6 +182,8 @@ namespace PremierLeagueApi.Data.Migrations
 
                     b.HasKey("ManagerId");
 
+                    b.HasIndex("TeamId");
+
                     b.ToTable("Managers");
                 });
 
@@ -195,7 +197,8 @@ namespace PremierLeagueApi.Data.Migrations
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("JerseyNumber")
                         .HasMaxLength(2)
@@ -206,13 +209,7 @@ namespace PremierLeagueApi.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("PlayerStatsPlayerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Position")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TeamEntityTeamId")
                         .HasColumnType("int");
 
                     b.Property<int>("TeamId")
@@ -220,9 +217,7 @@ namespace PremierLeagueApi.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PlayerStatsPlayerId");
-
-                    b.HasIndex("TeamEntityTeamId");
+                    b.HasIndex("TeamId");
 
                     b.ToTable("Players");
                 });
@@ -230,10 +225,7 @@ namespace PremierLeagueApi.Data.Migrations
             modelBuilder.Entity("PremierLeagueApi.Data.Entities.PlayerStatsEntity", b =>
                 {
                     b.Property<int>("PlayerId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlayerId"));
 
                     b.Property<int>("Assists")
                         .HasColumnType("int");
@@ -279,6 +271,17 @@ namespace PremierLeagueApi.Data.Migrations
                     b.HasKey("TeamId");
 
                     b.ToTable("Teams");
+
+                    b.HasData(
+                        new
+                        {
+                            TeamId = 1,
+                            City = "Nowhere",
+                            Losses = 0,
+                            ManagerId = 1,
+                            TeamName = "UnassignedTeam",
+                            Wins = 0
+                        });
                 });
 
             modelBuilder.Entity("PremierLeagueApi.Data.Entities.UserEntity", b =>
@@ -346,7 +349,7 @@ namespace PremierLeagueApi.Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -400,19 +403,37 @@ namespace PremierLeagueApi.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PremierLeagueApi.Data.Entities.ManagerEntity", b =>
+                {
+                    b.HasOne("PremierLeagueApi.Data.Entities.TeamEntity", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+                });
+
             modelBuilder.Entity("PremierLeagueApi.Data.Entities.PlayerEntity", b =>
                 {
-                    b.HasOne("PremierLeagueApi.Data.Entities.PlayerStatsEntity", "PlayerStats")
+                    b.HasOne("PremierLeagueApi.Data.Entities.TeamEntity", "Team")
+                        .WithMany("Players")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("PremierLeagueApi.Data.Entities.PlayerStatsEntity", b =>
+                {
+                    b.HasOne("PremierLeagueApi.Data.Entities.PlayerEntity", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PremierLeagueApi.Data.Entities.TeamEntity", "TeamId")
-                        .WithMany("Players")
-                        .HasForeignKey("TeamId");
-
-                    b.Navigation("PlayerStats");
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("PremierLeagueApi.Data.Entities.TeamEntity", b =>
