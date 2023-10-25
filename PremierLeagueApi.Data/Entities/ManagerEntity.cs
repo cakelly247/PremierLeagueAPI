@@ -15,7 +15,9 @@ namespace PremierLeagueApi.Data.Entities
         [Required, MaxLength(100)]
         public string Country { get; set; } = string.Empty;
 
-        [ForeignKey("Teams")]
         public int TeamId { get; set; } = 1;
+
+        [ForeignKey("TeamId")]
+        public TeamEntity Team { get; set; } = new();
     }
 }

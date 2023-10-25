@@ -18,7 +18,6 @@ public class TeamEntity
 
     public int Losses {get; set;} = 0;
     
-    [ForeignKey("Managers")]
     public int ManagerId { get; set; } = 1;
     
     public List<PlayerEntity>? Players {get; set;}
