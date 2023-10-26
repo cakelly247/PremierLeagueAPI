@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 public interface IPlayerStatsService
 {
-    Task<bool> UpdatePlayerStatsAsync(UpdatePlayerStats model);
-    Task<PlayerStatsEntity?> GetPlayerStatsByIdAsync(int playerId);
+    Task<bool> UpdatePlayerStats( UpdatePlayerStats updatePlayerStats);
+    Task<PlayerStatsEntity?> GetPlayerStats(int playerId);
+    Task<bool> CreatePlayerStats(AddPlayerStats createModel);
 }

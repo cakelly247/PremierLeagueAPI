@@ -13,8 +13,8 @@ public class PlayerStatsService : IPlayerStatsService
     {
         _context = context;
     }
-
-    public async Task<bool> UpdatePlayerStatsAsync( UpdatePlayerStats model)
+    
+    public async Task<bool> UpdatePlayerStats(UpdatePlayerStats model)
     {
         var player = await _context.PlayerStats.FindAsync(model.PlayerId);
 
@@ -23,10 +23,11 @@ public class PlayerStatsService : IPlayerStatsService
             return false;
         }
 
-        model.Goals = player.Goals;
-        model.Assists = player.Assists;
-        model.Saves = player.Saves;
         
+        player.Goals = model.Goals;
+        player.Assists = model.Assists;
+        player.Saves = model.Saves;
+
         await _context.SaveChangesAsync();
         return true;
     }
@@ -36,4 +37,19 @@ public class PlayerStatsService : IPlayerStatsService
         return await _context.PlayerStats.FindAsync(playerId);
     }
 
+    public async Task<bool> CreatePlayerStats(AddPlayerStats createModel)
+    {
+        
+        var playerStats = new PlayerStatsEntity
+        {
+            PlayerId = createModel.PlayerId,
+            Goals = createModel.Goals,
+            Assists = createModel.Assists,
+            Saves = createModel.Saves
+        };
+
+        _context.PlayerStats.Add(playerStats);
+        await _context.SaveChangesAsync();
+        return true; 
+    }
 }
