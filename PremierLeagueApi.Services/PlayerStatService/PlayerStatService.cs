@@ -14,7 +14,7 @@ public class PlayerStatsService : IPlayerStatsService
         _context = context;
     }
 
-    public async Task<bool> UpdatePlayerStats( UpdatePlayerStats model)
+    public async Task<bool> UpdatePlayerStatsAsync( UpdatePlayerStats model)
     {
         var player = await _context.PlayerStats.FindAsync(model.PlayerId);
 
@@ -31,7 +31,7 @@ public class PlayerStatsService : IPlayerStatsService
         return true;
     }
 
-    public async Task<PlayerStatsEntity?> GetPlayerStats(int playerId)
+    public async Task<PlayerStatsEntity?> GetPlayerStatsByIdAsync(int playerId)
     {
         return await _context.PlayerStats.FindAsync(playerId);
     }

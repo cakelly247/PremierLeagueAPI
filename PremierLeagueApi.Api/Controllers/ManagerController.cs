@@ -25,6 +25,7 @@ namespace PremierLeagueApi.Controllers
             {
                 return NotFound(new TextResponse("There are currently no managers in the database."));
             }
+
             return Ok(managers);
         }
 
@@ -32,16 +33,15 @@ namespace PremierLeagueApi.Controllers
         public async Task<ActionResult<ManagerEntity>> GetManager([FromRoute] int managerId)
         {
             var manager = await _managerService.GetManagerByIdAsync(managerId);
-
-            if (manager == null)
+            if (manager is null)
             {
-                return NotFound();
+                return NotFound(new TextResponse($"Unable to find manager with Id: {managerId}."));
             }
 
             return Ok(manager);
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateManager([FromBody] CreateManager managerModel)
         {
             if (managerModel is null)
@@ -54,17 +54,21 @@ namespace PremierLeagueApi.Controllers
             return Ok(response);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateManager([FromBody] UpdateManager managerModel)
+        [HttpPut("{managerId}")]
+        public async Task<IActionResult> UpdateManager([FromRoute] int managerId, [FromBody] UpdateManager updatedManager)
         {
-            if (managerModel is null)
+            if (updatedManager is null)
             {
-                return BadRequest();
+                return BadRequest(new TextResponse("Invalid input. Unable to update manager."));
             }
 
-            await _managerService.UpdateManagerAsync(managerModel);
+            var success = await _managerService.UpdateManagerAsync(managerId, updatedManager);
+            if (success)
+            {
+                return Ok(new TextResponse("Manager has been successfully updated."));
+            }
 
-            return Ok();
+            return BadRequest(new TextResponse($"Unable to find manager with Id:{managerId}."));
         }
 
         [HttpDelete("{managerId}")]

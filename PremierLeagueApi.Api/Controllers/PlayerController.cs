@@ -35,7 +35,7 @@ public class PlayerController : ControllerBase
         var player = await _playerService.GetPlayerByIdAsync(playerId);
         if (player is null)
         {
-            return BadRequest(new TextResponse($"Unable to find player with Id:{playerId}"));
+            return NotFound(new TextResponse($"Unable to find player with Id: {playerId}"));
         }
 
         return Ok(player);
@@ -52,6 +52,18 @@ public class PlayerController : ControllerBase
         else if (players.Count == 0)
         {
             return BadRequest(new TextResponse("There are currently no players in the database."));
+        }
+
+        return Ok(players);
+    }
+
+    [HttpGet("onteam/{teamId}")]
+    public async Task<IActionResult> GetPlayersByTeam([FromRoute] int teamId)
+    {
+        var players = await _playerService.GetPlayersByTeamAsync(teamId);
+        if (players!.Count == 0)
+        {
+            return NotFound(new TextResponse($"There are currently no players on this team(TeamId: {teamId})."));
         }
 
         return Ok(players);

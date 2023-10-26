@@ -16,5 +16,7 @@ namespace PremierLeagueApi.Models.Player
 
         [Required]
         public string Country { get; set; } = string.Empty;
+
+        public int TeamId { get; set; } = 13;
     }
 }

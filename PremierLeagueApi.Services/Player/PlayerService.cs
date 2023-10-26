@@ -27,7 +27,8 @@ namespace PremierLeagueApi.Services.Player
                 Name = model.Name,
                 JerseyNumber = model.JerseyNumber,
                 Position = model.Position,
-                Country = model.Country
+                Country = model.Country,
+                TeamId = 13
             };
 
             await _context.AddAsync(entity);
@@ -41,11 +42,21 @@ namespace PremierLeagueApi.Services.Player
             return await _context.Players.FindAsync(playerId);
         }
 
-        public async Task<List<PlayerEntity>> GetAllPlayersAsync()
+        public async Task<List<PlayerEntity>?> GetAllPlayersAsync()
         {
             return await _context.Players.ToListAsync();
         }
 
+        public async Task<List<PlayerEntity>?> GetPlayersByTeamAsync(int teamId)
+        {
+            var players = await _context.Players.Where(p => p.TeamId == teamId).ToListAsync();
+            if (players is null)
+            {
+                return null;
+            }
+
+            return players;
+        }
 
         public async Task<bool> UpdatePlayerAsync(PlayerUpdate model)
         {

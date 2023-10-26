@@ -38,6 +38,18 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetAllUsers()
     {
         var users = await _userService.GetAllUsersAsync();
+        if (users.Count == 0)
+        {
+            return NotFound(new TextResponse("There are currently no users in the database."));
+        }
+
         return Ok(users);
+    }
+
+    [HttpDelete("{userId}")]
+    public async Task<IActionResult> DeleteUser([FromRoute] int userId)
+    {
+        await _userService.DeleteUserAsync(userId);
+        return Ok(new TextResponse("User has been successfully deleted."));
     }
 }
