@@ -30,7 +30,7 @@ namespace PremierLeagueApi.Services.ManagerService
             {
                 Name = managerModel.Name,
                 Country = managerModel.Country,
-                TeamId = 13
+                TeamId = 1
             };
 
             await _context.Managers.AddAsync(entity);
