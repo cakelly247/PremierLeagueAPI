@@ -32,7 +32,7 @@ public class PlayerStatsService : IPlayerStatsService
         return true;
     }
 
-    public async Task<PlayerStatsEntity?> GetPlayerStatsByIdAsync(int playerId)
+    public async Task<PlayerStatsEntity?> GetPlayerStats(int playerId)
     {
         return await _context.PlayerStats.FindAsync(playerId);
     }
