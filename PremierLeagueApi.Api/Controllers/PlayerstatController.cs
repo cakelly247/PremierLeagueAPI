@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using PremierLeagueApi.Data;
-using PremierLeagueApi.Data.Entities;
 using PremierLeagueApi.Models.PlayerStatsModel;
 using System;
 using System.Threading.Tasks;
@@ -41,6 +40,24 @@ namespace PremierLeagueApi.Controllers
             }
 
             return Ok(playerStats);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreatePlayerStats([FromBody] AddPlayerStats createModel)
+        {
+            if (createModel is null)
+            {
+                return BadRequest();
+            }
+
+            var success = await _playerStatsService.CreatePlayerStats(createModel);
+
+            if (success)
+            {
+                return Ok();
+            }
+
+            return BadRequest("Failed to create player stats.");
         }
     }
 }
