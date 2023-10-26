@@ -11,7 +11,6 @@ namespace PremierLeagueApi.Models.Player
         [Required, MaxLength(100)]
         public string Name { get; set; } = string.Empty;
 
-        [Required, MaxLength(2)]
         public int JerseyNumber { get; set; }
 
         [Required]
@@ -20,6 +19,6 @@ namespace PremierLeagueApi.Models.Player
         [Required, MaxLength(100)]
         public string Country { get; set; } = string.Empty;
 
-        public int TeamId { get; set; } = 1;
+        public int TeamId { get; set; }
     }
 }

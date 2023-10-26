@@ -25,14 +25,14 @@ namespace PremierLeagueApi.Controllers
                 return BadRequest();
             } 
 
-            await _playerStatsService.UpdatePlayerStats(updateModel);
+            await _playerStatsService.UpdatePlayerStatsAsync(updateModel);
             return Ok();
         }
 
         [HttpGet("{playerId}")]
         public async Task<IActionResult> GetPlayerStats([FromRoute] int playerId)
         {
-            var playerStats = await _playerStatsService.GetPlayerStats(playerId);
+            var playerStats = await _playerStatsService.GetPlayerStatsByIdAsync(playerId);
 
             if (playerStats == null)
             {
