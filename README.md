@@ -37,5 +37,8 @@ Create an account or log in to start exploring the Premier League data and using
 Usage
 The Premier League API is designed to be user-friendly, allowing users to navigate through teams, managers, players, and player statistics effortlessly. Utilize the application's search and management features to explore and manipulate data as needed. For more detailed usage instructions, consult the application's documentation.
 
+Link to Trello Board: https://trello.com/b/VHrDjNAO/blue-badge-final
+Link to DbDiagram: https://dbdiagram.io/d/PremierLeagueDbDiagram-652fe75bffbf5169f0f3627a
+
 
 
