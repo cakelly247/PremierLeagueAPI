@@ -28,7 +28,7 @@ namespace PremierLeagueApi.Services.Player
                 JerseyNumber = model.JerseyNumber,
                 Position = model.Position,
                 Country = model.Country,
-                TeamId = 13
+                TeamId = model.TeamId
             };
 
             await _context.AddAsync(entity);

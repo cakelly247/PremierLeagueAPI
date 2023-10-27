@@ -21,7 +21,7 @@ namespace PremierLeagueApi.Data.Entities
         [Required, MaxLength(100)]
         public string Country { get; set; } = string.Empty;
 
-        public int TeamId { get; set; } = 1;
+        public int TeamId { get; set; }
 
         public virtual TeamEntity Team { get; set; }
     }

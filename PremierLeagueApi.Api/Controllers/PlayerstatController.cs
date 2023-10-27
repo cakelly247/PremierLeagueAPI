@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PremierLeagueApi.Data;
 using PremierLeagueApi.Models.PlayerStatsModel;
+using PremierLeagueApi.Models.Responses;
 using System;
 using System.Threading.Tasks;
 
@@ -26,7 +27,7 @@ namespace PremierLeagueApi.Controllers
             } 
 
             await _playerStatsService.UpdatePlayerStats(updateModel);
-            return Ok();
+            return Ok(new TextResponse("Players stats have been successfully updated."));
         }
 
         [HttpGet("{playerId}")]
@@ -54,7 +55,7 @@ namespace PremierLeagueApi.Controllers
 
             if (success)
             {
-                return Ok();
+                return Ok(new TextResponse("Players stats have been created successfully."));
             }
 
             return BadRequest("Failed to create player stats.");
