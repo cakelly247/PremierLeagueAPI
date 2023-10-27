@@ -42,7 +42,7 @@ namespace PremierLeagueApi.Controllers
             return Ok(team);
         }
 
-        [HttpGet("{name}:string")]
+        [HttpGet("name/{name}")]
         public async Task<IActionResult> GetTeamByName([FromRoute] string name)
         {
             var team = await _teamService.GetTeamByNameAsync(name);
@@ -50,10 +50,10 @@ namespace PremierLeagueApi.Controllers
             {
                 return BadRequest(new TextResponse($"Unable to find Team:{name}"));
             }
-            return Ok();
+            return Ok(team);
         }
 
-        [HttpGet("{city}:string")]
+        [HttpGet("city/{city}")]
         public async Task<IActionResult> GetTeamsByCity([FromRoute] string city)
         {
             var teams = await _teamService.GetTeamsByCityAsync(city);

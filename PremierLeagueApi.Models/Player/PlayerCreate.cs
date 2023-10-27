@@ -6,17 +6,15 @@ namespace PremierLeagueApi.Models.Player
     public class PlayerCreate
     {
         [Required, MaxLength(100)]
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
 
-        [Required]
         public int JerseyNumber { get; set; }
 
-        [Required]
         public Position Position { get; set; }
 
         [Required]
-        public string Country { get; set; } = string.Empty;
+        public string Country { get; set; }
 
-        public int TeamId { get; set; } = 13;
+        public int TeamId { get; set; }
     }
 }
